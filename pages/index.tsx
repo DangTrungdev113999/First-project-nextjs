@@ -1,10 +1,12 @@
-import Head from 'next/head'
+import React, { FC } from "react";
+import Head from "next/head";
 
-export default function Home() {
+const Home: FC = () => {
+  let firsetName: string = "dang";
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Hello nextjs</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -54,7 +56,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
@@ -205,5 +207,7 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
-}
+  );
+};
+
+export default Home;
