@@ -12,7 +12,7 @@ const Home: FC = () => {
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">HEHE</a>
         </h1>
 
         <p className="description">
