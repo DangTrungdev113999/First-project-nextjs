@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import Head from "next/head";
+import Image from "../assets/image.png";
 
 const Home: FC = () => {
   let firsetName: string = "dang";
@@ -11,6 +12,7 @@ const Home: FC = () => {
       </Head>
 
       <main>
+        <img src={Image} />
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">HEHE</a>
         </h1>
