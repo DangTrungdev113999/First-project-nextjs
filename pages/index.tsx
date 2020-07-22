@@ -1,9 +1,13 @@
 import React, { FC } from "react";
 import Head from "next/head";
 import Image from "../assets/image.png";
+import useConstructor from "../customHooks/useConstructor";
 
 const Home: FC = () => {
-  let firsetName: string = "dang";
+  useConstructor(() => {
+    console.log("constructor");
+  });
+
   return (
     <div className="container">
       <Head>
