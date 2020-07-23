@@ -1,12 +1,14 @@
 import React, { FC } from "react";
-// import Image from "../assets/image.png";
+import useConstructor from "../customHooks/useConstructor";
 
 const Home: FC = () => {
-  let firsetName: string = "dang";
+  useConstructor(() => {
+    console.log("constructor");
+  });
+
   return (
     <div className="container">
       <main>
-        {/* <img src={Image} /> */}
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">HEHE</a>
         </h1>
