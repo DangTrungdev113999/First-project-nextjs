@@ -1,18 +1,12 @@
 import React, { FC } from "react";
-import Head from "next/head";
-import Image from "../assets/image.png";
+// import Image from "../assets/image.png";
 
 const Home: FC = () => {
   let firsetName: string = "dang";
   return (
     <div className="container">
-      <Head>
-        <title>Hello nextjs</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main>
-        <img src={Image} />
+        {/* <img src={Image} /> */}
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">HEHE</a>
         </h1>
