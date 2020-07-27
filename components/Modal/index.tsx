@@ -44,8 +44,6 @@ const Modal: FC<ModalProps> = ({
     return () => document.removeEventListener("keyup", escapeHandler);
   }, [visible]);
 
-  useEffect(() => {}, []);
-
   const _onOk = (): void => {
     onOk ? onOk() : onCancel();
   };
