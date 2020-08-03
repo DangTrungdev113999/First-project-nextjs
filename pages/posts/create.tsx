@@ -2,7 +2,7 @@ import React from "react";
 import { PostCreateForm } from "@/components/PostCreateForm";
 import { PostCreateSidebar } from "@/components/PostCreateSidebar";
 
-const Create = () => {
+const Create: React.FC = () => {
   return (
     <div className="container">
       <div className="row">

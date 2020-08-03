@@ -2,7 +2,7 @@ import React from "react";
 import { UserDetailInfo } from "@/components/UserDetailInfo";
 import { UserPosts } from "@/components/UserPosts";
 
-const UserDetail = () => {
+const UserDetail: React.FC = () => {
   return (
     <div className="container">
       <UserDetailInfo />

@@ -2,11 +2,16 @@ import React, { useMemo } from "react";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 
+import es6Promise from "es6-promise";
+import fetch from "isomorphic-fetch";
+
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/assets/css/style.css";
+
+es6Promise.polyfill();
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const hiddenFooter = useMemo((): boolean => {

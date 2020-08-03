@@ -1,4 +1,4 @@
-const Register = () => {
+const Register: React.FC = () => {
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">

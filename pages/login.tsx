@@ -1,4 +1,6 @@
-const Login = () => {
+import React from "react";
+
+const Login: React.FC = () => {
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">
