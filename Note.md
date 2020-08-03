@@ -51,4 +51,28 @@
 ## getStaticPath -> Xác định cụ thể các dynamic routes nào được pre-render phía server.
 
 - Chỉ chạy phía server
-  = Dùng kết hợp với getStaticProps khi đó là dynamic routers
+- Dùng kết hợp với getStaticProps khi đó là dynamic routers
+
+# Set up Project
+
+## cài đặt next app
+
+- npx creact-next-app
+
+### Tạo file tsconfig.json và run code
+
+- tsconfig.json
+- yarn add --dev typescript @types/react @types/node
+- npm run dev
+
+-> file next-env.d.ts sẽ được sinh tự động .
+-> Nội dung trong tsconfig sẽ được cấu hình tự động.
+
+## Tạo thêm config cho image, css, sass cho webpack
+
+- tạo file next.config.js
+- https://github.com/twopluszero/next-images
+- https://github.com/vercel/next-plugins/tree/master/packages/next-css
+- https://github.com/vercel/next-plugins/tree/master/packages/next-sass
+
+##
