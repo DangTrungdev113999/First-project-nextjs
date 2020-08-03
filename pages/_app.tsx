@@ -1,20 +1,53 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { AppProps } from "next/app";
+import React, { useEffect } from "react";
 import Head from "next/head";
+import App, { AppProps, AppContext } from "next/app";
 
-import "../assets/global.scss";
+import { Header } from "@/components/Header";
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@/assets/css/style.css";
+
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="root-app">
+    <div id="root">
       <Head>
-        <title>Hello nextjs</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="/css/style.css" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+          name="viewport"
+          content="width=device-width, minimum-scale=1, maximum-scale=1"
+        />
+        <meta name="keywords" content="HTML5 Template" />
+        <meta name="description" content="Cộng đồng chế ảnh ZendVN" />
+        <meta name="author" content="etheme.com" />
+        <title>Cộng đồng chế ảnh ZendVN</title>
+        <link
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+          rel="stylesheet"
+        />
+        {/* icon */}
+        {/* Font Awesome */}
+        <link
+          rel="stylesheet"
+          href="/fonts/font-awesome/css/font-awesome.css"
+        />
+        <link rel="stylesheet" href="/fonts/emotion/style.css" />
       </Head>
-      <Component {...pageProps} />
+      <Header />
+      <main>
+        <Component {...pageProps} />
+      </main>
     </div>
   );
+}
+
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await App.getInitialProps(appContext);
+  return {
+    pageProps: {
+      ...appProps.pageProps,
+    },
+  };
 };
 
 export default MyApp;
