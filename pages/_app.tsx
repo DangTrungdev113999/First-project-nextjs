@@ -10,7 +10,7 @@ import "@/assets/css/style.css";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const hiddenFooter = useMemo((): boolean => {
-    const excludes = ["/"];
+    const excludes = ["/", "/posts/[postId]"];
     const currentPath = router.pathname;
     return excludes.indexOf(currentPath) !== -1;
   }, [router]);
