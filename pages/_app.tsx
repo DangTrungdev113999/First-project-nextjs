@@ -1,13 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
+import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import App, { AppProps, AppContext } from "next/app";
 
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/assets/css/style.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
+  const hiddenFooter = useMemo((): boolean => {
+    const excludes = ["/"];
+    const currentPath = router.pathname;
+    return excludes.indexOf(currentPath) !== -1;
+  }, [router]);
+
+  const hiddenHeader = useMemo((): boolean => {
+    const excludes = ["/login", "/register"];
+    const currentPath = router.pathname;
+    return excludes.indexOf(currentPath) !== -1;
+  }, [router]);
+
   return (
     <div id="root">
       <Head>
@@ -33,10 +46,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="stylesheet" href="/fonts/emotion/style.css" />
       </Head>
-      <Header />
+      {!hiddenHeader && <Header />}
       <main>
         <Component {...pageProps} />
       </main>
+      {!hiddenFooter && <Footer />}
     </div>
   );
 }
