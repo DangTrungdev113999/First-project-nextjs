@@ -1,15 +1,10 @@
 import request from "@/utils/request";
-import { BASE_URL } from "@/constants/index";
 
-export const login = async ({ email, password }) => {
-  const response = await request(BASE_URL, "/member/login.php", "POST", {
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const login = async ({ email, password }) =>
+  await request("/api/login", {
+    method: "POST",
     data: {
       email,
       password,
     },
   });
-  return response;
-};

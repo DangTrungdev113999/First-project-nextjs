@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fetch from "isomorphic-fetch";
+import { useRouter } from "next/router";
 import { login } from "@/modules/user/api";
 
 interface FormLogin {
@@ -14,7 +14,7 @@ const initFormData = {
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormLogin>(initFormData);
-
+  const router = useRouter();
   const handleChangeFormValue = (key: string) => (e: any) => {
     setFormData({
       ...formData,
@@ -24,8 +24,8 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const result = await login(formData);
-    console.log({ result });
+    const response = await login(formData);
+    router.push("/");
   };
 
   return (

@@ -14,17 +14,18 @@ import "@/assets/css/style.css";
 es6Promise.polyfill();
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const pathname = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
-    const currentPath = router.pathname;
+    const currentPath = pathname;
     return excludes.indexOf(currentPath) !== -1;
-  }, [router]);
+  }, [pathname]);
 
   const hiddenHeader = useMemo((): boolean => {
     const excludes = ["/login", "/register"];
-    const currentPath = router.pathname;
+    const currentPath = pathname;
     return excludes.indexOf(currentPath) !== -1;
-  }, [router]);
+  }, [pathname]);
 
   return (
     <div id="root">
