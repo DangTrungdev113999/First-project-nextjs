@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import fetch from "isomorphic-fetch";
+import { login } from "@/modules/user/api";
+
+interface FormLogin {
+  email: string;
+  password: string;
+}
+
+const initFormData = {
+  email: "",
+  password: "",
+};
 
 const Login: React.FC = () => {
+  const [formData, setFormData] = useState<FormLogin>(initFormData);
+
+  const handleChangeFormValue = (key: string) => (e: any) => {
+    setFormData({
+      ...formData,
+      [key]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const result = await login(formData);
+    console.log({ result });
+  };
+
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">
@@ -11,9 +38,11 @@ const Login: React.FC = () => {
       <div className="ass1-login__content">
         <p>Đăng nhập</p>
         <div className="ass1-login__form">
-          <form action="#">
+          <form action="#" onSubmit={handleSubmit}>
             <input
               type="text"
+              value={formData.email}
+              onChange={handleChangeFormValue("email")}
               className="form-control"
               placeholder="Email"
               required
@@ -21,6 +50,8 @@ const Login: React.FC = () => {
             <div className="ass1-input-copy">
               <input
                 type="password"
+                value={formData.password}
+                onChange={handleChangeFormValue("password")}
                 className="form-control"
                 placeholder="Mật khẩu"
                 required
