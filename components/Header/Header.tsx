@@ -1,6 +1,9 @@
 import React from "react";
+import Link from "next/link";
+import { useGlobalState } from "@/customHooks/globalState";
 
 const Header = () => {
+  const [currentUser] = useGlobalState("currentUser");
   return (
     <header>
       <div className="ass1-header">
@@ -180,9 +183,25 @@ const Header = () => {
           <a href="#" className="ass1-header__btn-upload ass1-btn">
             <i className="icon-Upvote" /> Upload
           </a>
-          <a href="dang-nhap.html" className="ass1-header__btn-upload ass1-btn">
-            Login
-          </a>
+          {currentUser ? (
+            <Link href="/login">
+              <a
+                href="dang-nhap.html"
+                className="ass1-header__btn-upload ass1-btn"
+              >
+                {currentUser.fullname}
+              </a>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <a
+                href="dang-nhap.html"
+                className="ass1-header__btn-upload ass1-btn"
+              >
+                Login
+              </a>
+            </Link>
+          )}
         </div>
       </div>
     </header>

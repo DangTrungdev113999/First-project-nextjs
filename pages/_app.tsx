@@ -1,19 +1,22 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-
-import es6Promise from "es6-promise";
-import fetch from "isomorphic-fetch";
+import cookie from "cookie";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/assets/css/style.css";
-
-es6Promise.polyfill();
+import { parseJwt } from "@/utils/index";
+import { getUserById } from "@/modules/user/api";
+import { useGlobalState } from "@/customHooks/globalState";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const [currentUser, setCureentUser] = useGlobalState("currentUser");
+  useMemo(() => {
+    setCureentUser(pageProps.userInfo);
+  }, []);
   const pathname = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
@@ -44,8 +47,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
           rel="stylesheet"
         />
-        {/* icon */}
-        {/* Font Awesome */}
+
         <link
           rel="stylesheet"
           href="/fonts/font-awesome/css/font-awesome.css"
@@ -63,9 +65,17 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
+  let response = null;
+  if (typeof window === "undefined") {
+    const token = cookie.parse(appContext.ctx.req.headers.cookie || "")?.token;
+    const currentUser = parseJwt(token);
+    response = currentUser?.id ? await getUserById(currentUser.id) : null;
+  }
+
   return {
     pageProps: {
       ...appProps.pageProps,
+      userInfo: response?.user,
     },
   };
 };

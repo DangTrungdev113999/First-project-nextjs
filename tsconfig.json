@@ -29,6 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_app.tsx",
-    "constants/index.js"
+    "constants/index.js",
+    "utils/index.ts"
   ]
 }
