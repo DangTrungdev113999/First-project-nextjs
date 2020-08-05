@@ -2,21 +2,26 @@ import React, { useEffect, useMemo } from "react";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import cookie from "cookie";
+import jsCookie from "js-cookie";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/assets/css/style.css";
-import { parseJwt } from "@/utils/index";
+import { parseJwt, getTokenInSsrAndCsr } from "@/utils/index";
 import { getUserById } from "@/modules/user/api";
-import { useGlobalState } from "@/customHooks/globalState";
+import { useGlobalState } from "@/customHooks/useGlobalState";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const [currentUser, setCureentUser] = useGlobalState("currentUser");
+  const [, setCureentUser] = useGlobalState("currentUser");
+  const [, setToken] = useGlobalState("token");
+
   useMemo(() => {
     setCureentUser(pageProps.userInfo);
+    setToken(pageProps.token);
   }, []);
+
   const pathname = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
@@ -65,17 +70,18 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  let response = null;
-  if (typeof window === "undefined") {
-    const token = cookie.parse(appContext.ctx.req.headers.cookie || "")?.token;
-    const currentUser = parseJwt(token);
-    response = currentUser?.id ? await getUserById(currentUser.id) : null;
-  }
 
+  const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
+  const response =
+    currentUser?.id && currentUser?.email
+      ? await getUserById(currentUser.id)
+      : null;
+  
   return {
     pageProps: {
       ...appProps.pageProps,
       userInfo: response?.user,
+      token: token,
     },
   };
 };

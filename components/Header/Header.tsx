@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { useGlobalState } from "@/customHooks/globalState";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+
+import "./Header.scss";
 
 const Header = () => {
   const [currentUser] = useGlobalState("currentUser");
@@ -180,18 +182,21 @@ const Header = () => {
               </label>
             </form>
           </div>
-          <a href="#" className="ass1-header__btn-upload ass1-btn">
-            <i className="icon-Upvote" /> Upload
-          </a>
+          <Link href="/login">
+            <a className="ass1-header__btn-upload ass1-btn">
+              <i className="icon-Upvote" /> Upload
+            </a>
+          </Link>
           {currentUser ? (
-            <Link href="/login">
-              <a
-                href="dang-nhap.html"
-                className="ass1-header__btn-upload ass1-btn"
-              >
-                {currentUser.fullname}
+            <div className="wrapper-user">
+              <a className="user-header">
+                <span className="avatar">
+                  <img src="/images/avatar-02.png" />
+                </span>
+                <span className="email">Đặng Thế Trung</span>
               </a>
-            </Link>
+              <div className="logout">logout</div>
+            </div>
           ) : (
             <Link href="/login">
               <a

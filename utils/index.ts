@@ -1,4 +1,8 @@
 import atob from "atob";
+import { NextPageContext } from "next";
+
+import cookie from "cookie";
+import jsCookie from "js-cookie";
 
 export const parseJwt = (token: string) => {
   try {
@@ -17,4 +21,23 @@ export const parseJwt = (token: string) => {
   } catch (error) {
     return null;
   }
+};
+
+type TypeUser = {
+  id: string;
+  email: string;
+};
+
+export const getTokenInSsrAndCsr = (
+  ctx: NextPageContext
+): [string, TypeUser] => {
+  let token = "";
+  if (typeof window === "undefined") {
+    token = cookie.parse(ctx.req.headers.cookie || "")?.token || "";
+  } else {
+    token = jsCookie.get("token") || "";
+  }
+  const currentUser = parseJwt(token) || {};
+
+  return [token, currentUser];
 };
