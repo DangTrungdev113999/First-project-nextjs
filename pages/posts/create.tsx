@@ -1,8 +1,10 @@
 import React from "react";
 import { PostCreateForm } from "@/components/PostCreateForm";
 import { PostCreateSidebar } from "@/components/PostCreateSidebar";
+import useAuthenticated from "@/customHooks/useAutthenticated";
 
 const Create: React.FC = () => {
+  useAuthenticated();
   return (
     <div className="container">
       <div className="row">

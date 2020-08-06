@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 import { login } from "@/modules/user/api";
-import useNotAuthenticated from "@/customHooks/useNotAuthenticated";
+import useAuthenticated from "@/customHooks/useAutthenticated";
+import { handleError } from "../utils";
 
 interface FormLogin {
   email: string;
@@ -14,7 +17,7 @@ const initFormData = {
 };
 
 const Login: React.FC = () => {
-  useNotAuthenticated();
+  useAuthenticated("login");
   const [formData, setFormData] = useState<FormLogin>(initFormData);
   const router = useRouter();
   useEffect(() => {
@@ -40,8 +43,16 @@ const Login: React.FC = () => {
 
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
-    // validate feild
-    e.target.submit();
+    const form = document.getElementById("form-login");
+    const email = form.elements.namedItem("email").value;
+    const password = form.elements.namedItem("password").value;
+    const errorEmail = handleError("email", email);
+    const errorPassword = handleError("password", password);
+    if (!errorEmail && !errorPassword) {
+      e.target.submit();
+    } else {
+      alert(`${errorEmail}, ${errorPassword}`);
+    }
   };
   return (
     <div className="ass1-login">
@@ -54,7 +65,12 @@ const Login: React.FC = () => {
         <p>Đăng nhập</p>
         <div className="ass1-login__form">
           {/* <form action="#" onSubmit={handleSubmit}> */}
-          <form action="/api/login" method="POST" onSubmit={handleSubmitForm}>
+          <form
+            id="form-login"
+            action="/api/login"
+            method="POST"
+            onSubmit={handleSubmitForm}
+          >
             <input
               type="text"
               name="email"
@@ -76,7 +92,9 @@ const Login: React.FC = () => {
               />
             </div>
             <div className="ass1-login__send">
-              <a href="dang-ky.html">Đăng ký một tài khoản</a>
+              <Link href="/register">
+                <a>Đăng ký một tài khoản</a>
+              </Link>
               <button type="submit" className="ass1-btn">
                 Đăng nhập
               </button>

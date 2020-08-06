@@ -1,11 +1,27 @@
-import React from "react";
+import { FC } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import JsCookie from "js-cookie";
+
 import { useGlobalState } from "@/customHooks/useGlobalState";
 
 import "./Header.scss";
 
-const Header = () => {
-  const [currentUser] = useGlobalState("currentUser");
+const Header: FC = () => {
+  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+  const [, setToken] = useGlobalState("token");
+  const router = useRouter();
+
+  const handleLogout = (): void => {
+    const check = window.confirm("Bạn có chắc chắn muốn logout ?");
+    if (check) {
+      JsCookie.remove("token");
+      setCurrentUser(null);
+      setToken("");
+      router.push("/login");
+    }
+  };
+
   return (
     <header>
       <div className="ass1-header">
@@ -191,11 +207,15 @@ const Header = () => {
             <div className="wrapper-user">
               <a className="user-header">
                 <span className="avatar">
-                  <img src="/images/avatar-02.png" />
+                  <img
+                    src={currentUser.profilepicture || "/images/avatar-02.png"}
+                  />
                 </span>
-                <span className="email">Đặng Thế Trung</span>
+                <span className="email">{currentUser.fullname}</span>
               </a>
-              <div className="logout">logout</div>
+              <div className="logout" onClick={handleLogout}>
+                logout
+              </div>
             </div>
           ) : (
             <Link href="/login">

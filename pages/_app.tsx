@@ -1,17 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import cookie from "cookie";
-import jsCookie from "js-cookie";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { getUserById } from "@/modules/user/api";
+import { getTokenInSsrAndCsr } from "@/utils/index";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@/assets/css/style.css";
-import { parseJwt, getTokenInSsrAndCsr } from "@/utils/index";
-import { getUserById } from "@/modules/user/api";
-import { useGlobalState } from "@/customHooks/useGlobalState";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [, setCureentUser] = useGlobalState("currentUser");
@@ -76,7 +74,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     currentUser?.id && currentUser?.email
       ? await getUserById(currentUser.id)
       : null;
-  
+
   return {
     pageProps: {
       ...appProps.pageProps,
