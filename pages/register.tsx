@@ -1,188 +1,150 @@
+import React from "react";
+import JsCookie from "js-cookie";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Col, Form, Input, Row, Button, Typography, Space } from "antd";
+
 import useAuthenticated from "@/customHooks/useAutthenticated";
 import { useGlobalState } from "@/customHooks/useGlobalState";
 import { register } from "@/modules/user/api";
-import { Col, Form, Input, Row } from "antd";
-import JsCookie from "js-cookie";
-import React, { useMemo, useState } from "react";
-import { handleError } from "utils/index";
+
+import styled from "styled-components";
+
+import Link from "next/link";
 
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
-const initialRegister = {
-  fullname: {
-    value: "",
-    error: "",
-  },
-  email: {
-    value: "",
-    error: "",
-  },
-  password: {
-    value: "",
-    error: "",
-  },
-  repassword: {
-    value: "",
-    error: "",
-  },
-};
+const { Title } = Typography;
+
+const Wrapper = styled.div`
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 20px 30px 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+
+  & .register-title {
+    text-align: center;
+  }
+`;
 
 const Register: React.FC = () => {
   useAuthenticated("register");
-  const [registerData, setRegisterData] = useState(initialRegister);
   const [, setCurrentUser] = useGlobalState("currentUser");
   const [, setToken] = useGlobalState("token");
-  const isSubmitForm = useMemo(() => {
-    for (let key in registerData) {
-      if (registerData[key].error) {
-        return false;
-      }
-    }
-    return true;
-  }, [registerData]);
 
-  const handleRegisterData = (key: string) => (e: any) => {
-    const value = e.target.value;
-    const password = registerData.password.value;
-    let error = handleError(key, value, password);
-    setRegisterData({
-      ...registerData,
-      [key]: {
-        value,
-        error,
-      },
+  const onRegister = async (fields: any) => {
+    const response = await register({
+      fullname: fields.fullname,
+      email: fields.email,
+      password: fields.password,
+      repassword: fields.repassword,
     });
-  };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const fullname = registerData.fullname.value;
-    const email = registerData.email.value;
-    const password = registerData.password.value;
-    const repassword = registerData.repassword.value;
-
-    if (isSubmitForm && fullname && email && password && repassword) {
-      const response = await register({
-        fullname,
-        email,
-        password,
-        repassword,
-      });
-      if (response.status === 200) {
-        JsCookie.set("token", response.token);
-        setToken(response.token);
-        setCurrentUser(response.user);
-      } else {
-        alert("Đăng ký thất bại vui lòng thử lại");
-      }
+    if (response.status === 200) {
+      JsCookie.set("token", response.token);
+      setToken(response.token);
+      setCurrentUser(response.user);
     } else {
-      alert("Vui lòng nhập đầy đủ thông tin.!");
+      alert("Đăng ký thất bại vui lòng thử lại");
     }
   };
 
   return (
-    <>
+    <Wrapper>
       <Row justify="center" align="middle">
-        <Col span={6}>
-          <Form {...layout}>
+        <Col span={24}>
+          <Title level={2} className="register-title">
+            NextJs
+          </Title>
+        </Col>
+        <Col span={24}>
+          <Form size="large" onFinish={onRegister} scrollToFirstError>
             <Form.Item
-              name="email"
-              rules={[{ required: true, message: "Xin nhập email!" }]}
+              name="fullname"
+              rules={[
+                { required: true, message: "Xin hãy nhập tên!" },
+                { min: 2, message: "Tên phải nhiều hơn hai ký tự" },
+              ]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                placeholder="Họ và Tên"
+              />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: "Xin nhập email!" },
+                {
+                  type: "email",
+                  message: "Vui lòng nhập đúng định dạng email!",
+                },
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: "Xin nhập password!" }]}
+              rules={[
+                { required: true, message: "Xin hãy nhập mật khẩu!" },
+                { min: 6, message: "Mật khẩu phải có ít nhất 6 kí tự" },
+              ]}
             >
-              <Input />
+              <Input.Password
+                prefix={<LockOutlined />}
+                type="password"
+                placeholder="Mật khẩu"
+              />
             </Form.Item>
             <Form.Item
               name="repassword"
-              rules={[{ required: true, message: "Xin nhập password!" }]}
+              rules={[
+                { required: true, message: "Xin nhập lại mật khẩu!" },
+
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject("Mật khẩu nhập lại không khớp!");
+                  },
+                }),
+              ]}
             >
-              <Input />
+              <Input.Password
+                prefix={<LockOutlined />}
+                type="password"
+                placeholder="Mật khẩu"
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ width: "100%" }}
+              >
+                Đăng ký
+              </Button>
+              hoặc
+              <Link href="/login">
+                <Button type="link" htmlType="submit">
+                  Đăng nhập
+                </Button>
+              </Link>
             </Form.Item>
           </Form>
         </Col>
       </Row>
-      {/* <div className="ass1-login">
-        <div className="ass1-login__logo">
-          <a href="index.html" className="ass1-logo">
-            Learning nextjs
-          </a>
-        </div>
-        <div className="ass1-login__content">
-          <p>Đăng ký một tài khoản</p>
-          <div className="ass1-login__form">
-            <form action="#">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Tên hiển thị"
-                required
-              />
-              {registerData.fullname.error && (
-                <small className="error">{registerData.fullname.error}</small>
-              )}
-            </div>
-            <div className="wrapper-input">
-              <input
-                value={registerData.email.value}
-                onChange={handleRegisterData("email")}
-                type="email"
-                className="form-control"
-                placeholder="Email"
-                required
-              />
-              {registerData.email.error && (
-                <small className="error">{registerData.email.error}</small>
-              )}
-            </div>
-            <div className="wrapper-input">
-              <input
-                value={registerData.password.value}
-                onChange={handleRegisterData("password")}
-                type="password"
-                className="form-control"
-                placeholder="Mật khẩu"
-                required
-              />
-              {registerData.password.error && (
-                <small className="error">{registerData.password.error}</small>
-              )}
-            </div>
-            <div className="wrapper-input">
-              <input
-                value={registerData.repassword.value}
-                onChange={handleRegisterData("repassword")}
-                type="password"
-                className="form-control"
-                placeholder="Nhập lại mật khẩu"
-                required
-              />
-              {registerData.repassword.error && (
-                <small className="error">{registerData.repassword.error}</small>
-              )}
-            </div>
-            <div className="ass1-login__send">
-              <Link href="/login">
-                <a>Đăng nhập</a>
-              </Link>
-              <button type="submit" className="ass1-btn">
-                Đăng ký
-              </button>
-            </div>
-          </form>
-        </div>
-      </div> */}
-    </>
+    </Wrapper>
   );
 };
 

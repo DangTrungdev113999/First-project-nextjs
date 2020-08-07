@@ -9,8 +9,8 @@ import React, { useMemo } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
-import "@/assets/css/style.css";
 
+import "@/assets/css/style.css";
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [, setCureentUser] = useGlobalState("currentUser");
   const [, setToken] = useGlobalState("token");
