@@ -1,17 +1,15 @@
-import React, { useMemo } from "react";
-import App, { AppContext, AppProps } from "next/app";
-import Head from "next/head";
-
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { getUserById } from "@/modules/user/api";
+import { getTokenInSsrAndCsr } from "@/utils/index";
+import App, { AppContext, AppProps } from "next/app";
+import Head from "next/head";
+import React, { useMemo } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "@/assets/css/style.css";
-import { getTokenInSsrAndCsr } from "@/utils/index";
-import { getUserById } from "@/modules/user/api";
-import { useGlobalState } from "@/customHooks/useGlobalState";
-
 import "antd/dist/antd.css";
+import "@/assets/css/style.css";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [, setCureentUser] = useGlobalState("currentUser");

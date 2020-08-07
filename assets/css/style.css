@@ -1598,6 +1598,7 @@ select.form-control:focus {
   margin-bottom: 30px;
 }
 .ass1-login__send {
+  clear: both;
   margin-bottom: 30px;
   align-items: center;
   justify-content: space-between;
@@ -2635,4 +2636,14 @@ select.form-control:focus {
 .ass1-aside .ass1-aside__edit-post-head .ass1-checkbox span {
   width: 20px;
   height: 20px;
+}
+
+.error {
+  float: left;
+  color: tomato;
+  padding: 5px 0px;
+}
+
+.wrapper-input {
+  margin-bottom: 25px;
 }
