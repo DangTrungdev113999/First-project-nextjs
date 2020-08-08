@@ -1,42 +1,88 @@
+import React from "react";
+import styled from "styled-components";
+import { Avatar, Typography, Divider } from "antd";
+import { UserOutlined, CommentOutlined } from "@ant-design/icons";
+
+const Wrapper = styled.div`
+  width: 100%;
+  padding: 30px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+`;
+
+const { Text, Paragraph } = Typography;
+
+const Header = styled.div`
+  display: flex;
+  > span {
+    cursor: pointer;
+  }
+  > div {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    > span {
+      &:first-child {
+        cursor: pointer;
+      }
+    }
+  }
+`;
+
+const Image = styled.img`
+  position: relative;
+  width: 100%;
+  border-radius: 5px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  > span {
+    &:first-child {
+      margin-right: 15px;
+    }
+  }
+`;
+
 const PostItem = () => {
   return (
-    <div className="ass1-section__item">
-      <div className="ass1-section">
-        <div className="ass1-section__head">
-          <a
-            href="bai-viet-chi-tiet.html"
-            className="ass1-section__avatar ass1-avatar"
-          >
-            <img src="/images/avatar-02.png" alt="" />
-          </a>
-          <div>
-            <a href="bai-viet-chi-tiet.html" className="ass1-section__name">
-              Thanos
-            </a>
-            <span className="ass1-section__passed">2 giờ trước</span>
-          </div>
+    <Wrapper>
+      <Header>
+        <Avatar shape="square" size={40} icon={<UserOutlined />} />
+        <div>
+          <Text strong>Thanos</Text>
+          <Text>2 giờ trước</Text>
         </div>
-        <div className="ass1-section__content">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et
-            inventore obcaecati eum deserunt ut, aperiam quas! Placeat
-            blanditiis consequatur, deserunt facere iusto amet a ad suscipit
-            laudantium unde quidem perferendis!
-          </p>
-          <div className="ass1-section__image">
-            <a href="bai-viet-chi-tiet.html">
-              <img src="images/microphone-1209816_1920.jpg" alt="" />
-            </a>
-          </div>
-        </div>
-        <div className="ass1-section__footer">
-          <a href="#" className="ass1-section__btn-comment ass1-btn-icon">
-            <i className="icon-Comment_Full" />
-            <span>982</span>
-          </a>
-        </div>
-      </div>
-    </div>
+      </Header>
+      <Divider />
+      <Paragraph
+        ellipsis={{ rows: 1, expandable: true, symbol: "xem thêm" }}
+        style={{ color: "#000" }}
+      >
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et inventore
+        obcaecati eum deserunt ut, aperiam quas! Placeat blanditiis consequatur,
+        deserunt facere iusto amet a ad suscipit laudantium unde quidem
+        perferendis!
+      </Paragraph>
+
+      <Image src="/images/microphone-1209816_1920.jpg" alt="" />
+
+      <Divider />
+
+      <Footer>
+        <CommentOutlined size={40} />
+        <Text>984</Text>
+      </Footer>
+    </Wrapper>
   );
 };
 

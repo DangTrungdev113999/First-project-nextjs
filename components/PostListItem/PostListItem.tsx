@@ -1,4 +1,5 @@
 import { PostItem } from "../Postitem";
+import { Button } from "antd";
 
 const PostListItem = () => {
   return (
@@ -6,9 +7,9 @@ const PostListItem = () => {
       <PostItem />
       <PostItem />
       <PostItem />
-      <button className="load-more ass1-btn">
-        <span>Xem thêm</span>
-      </button>
+      <Button type="primary" size="large">
+        Xem thêm
+      </Button>
     </div>
   );
 };
