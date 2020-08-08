@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import JsCookie from "js-cookie";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Col, Form, Input, Row, Button, Typography, Space } from "antd";
+import { Col, Form, Input, Row, Button, Typography, message } from "antd";
 
 import useAuthenticated from "@/customHooks/useAutthenticated";
 import { useGlobalState } from "@/customHooks/useGlobalState";
@@ -11,11 +11,6 @@ import styled from "styled-components";
 
 import Link from "next/link";
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-
 const { Title } = Typography;
 
 const Wrapper = styled.div`
@@ -23,6 +18,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   margin-top: 100px;
   padding: 20px 30px 10px;
+  background-color: #fff;
   border: 1px solid lightgray;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
@@ -36,21 +32,23 @@ const Register: React.FC = () => {
   useAuthenticated("register");
   const [, setCurrentUser] = useGlobalState("currentUser");
   const [, setToken] = useGlobalState("token");
+  const [loading, setLoading] = useState(false);
 
   const onRegister = async (fields: any) => {
+    setLoading(true);
     const response = await register({
       fullname: fields.fullname,
       email: fields.email,
       password: fields.password,
       repassword: fields.repassword,
     });
-
+    setLoading(false);
     if (response.status === 200) {
       JsCookie.set("token", response.token);
       setToken(response.token);
       setCurrentUser(response.user);
     } else {
-      alert("Đăng ký thất bại vui lòng thử lại");
+      message.error(response.error || "Đăng ký thất bại, xin hãy thử lại", 2);
     }
   };
 
@@ -108,7 +106,6 @@ const Register: React.FC = () => {
               name="repassword"
               rules={[
                 { required: true, message: "Xin nhập lại mật khẩu!" },
-
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
@@ -131,6 +128,7 @@ const Register: React.FC = () => {
                 type="primary"
                 htmlType="submit"
                 style={{ width: "100%" }}
+                loading={loading}
               >
                 Đăng ký
               </Button>
