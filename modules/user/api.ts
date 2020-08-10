@@ -23,7 +23,7 @@ export const login = async ({ email, password }: TypeLogin) =>
   });
 
 export const register = async (data: TypeRegister) =>
-  await request(`${BASE_URL}//member/register.php`, {
+  await request(`${BASE_URL}/member/register.php`, {
     method: "POST",
     data,
   });

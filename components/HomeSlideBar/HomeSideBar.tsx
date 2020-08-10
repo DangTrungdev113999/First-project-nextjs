@@ -1,13 +1,24 @@
-const HomeSideBar = () => {
+import React, { FC } from "react";
+import styled from "styled-components";
+import { PostDataType } from "pages";
+import { Typography, Button, Space } from "antd";
+import Link from "next/link";
+
+const { Text, Link: LinkAnt } = Typography;
+
+type PropsType = {
+  userPosts: PostDataType[];
+};
+
+const HomeSideBar: FC<PropsType> = ({ userPosts }) => {
   return (
-    <aside className="ass1-aside">
-      <div className="ass1-content-head__t">
-        <div>Bài viết gần đây của bạn.</div>
-      </div>
-      <div>
-        Vui lòng đăng nhập để xem nội dung này
-        <a href="#">Đăng nhập</a>
-      </div>
+    <aside>
+      <Text strong>Bài viết gần đây của bạn.</Text>
+      <br />
+      <Text>Vui lòng đăng nhập để xem nội dung này </Text>
+      <Link href="/login">
+        <LinkAnt href="">Đăng nhập</LinkAnt>
+      </Link>
     </aside>
   );
 };

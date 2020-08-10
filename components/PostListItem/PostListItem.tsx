@@ -1,16 +1,23 @@
-import { PostItem } from "../Postitem";
+import React, { FC } from "react";
 import { Button } from "antd";
 
-const PostListItem = () => {
+import { PostDataType } from "pages";
+import { PostItem } from "../Postitem";
+
+type PropsType = {
+  listPosts: PostDataType[];
+};
+
+const PostListItem: FC<PropsType> = ({ listPosts }) => {
   return (
-    <div className="ass1-section__list">
+    <>
       <PostItem />
       <PostItem />
       <PostItem />
       <Button type="primary" size="large">
         Xem thêm
       </Button>
-    </div>
+    </>
   );
 };
 

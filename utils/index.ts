@@ -66,3 +66,14 @@ export const handleError = (
   }
   return "";
 };
+
+export const toQuerryString = (params: Record<string, any>) => {
+  return Object.keys(params)
+    .reduce((men, key) => {
+      if (params[key]) {
+        men = `${men}${key}=${encodeURIComponent(params[key])}&`;
+      }
+      return men;
+    }, "?")
+    .slice(0, -1);
+};
