@@ -3,7 +3,9 @@ import { BASE_URL } from "@/constants/index";
 import { toQuerryString } from "@/utils/index";
 
 export const getListPosts = async (params: Record<string, any>) =>
-  await request(`${BASE_URL}/post/post.php${toQuerryString(params)}`);
+  await request(
+    `${BASE_URL}/post/getListPagination.php${toQuerryString(params)}`
+  );
 
 export const getUserPosts = async (
   params: Record<string, any>,

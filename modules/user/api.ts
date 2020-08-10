@@ -13,8 +13,17 @@ type TypeLogin = {
 import request from "@/utils/request";
 import { BASE_URL } from "@/constants/index";
 
-export const login = async ({ email, password }: TypeLogin) =>
+export const loginWithSSR = async ({ email, password }: TypeLogin) =>
   await request("/api/login", {
+    method: "POST",
+    data: {
+      email,
+      password,
+    },
+  });
+
+export const loginWithCSR = async ({ email, password }: TypeLogin) =>
+  await request(`${BASE_URL}/member/login.php`, {
     method: "POST",
     data: {
       email,

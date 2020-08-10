@@ -1,7 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { Avatar, Typography, Divider } from "antd";
 import { UserOutlined, CommentOutlined } from "@ant-design/icons";
+import { PostDataType } from "pages";
+import dayjs from "dayjs";
+import Link from "next/link";
+
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/vi";
+
+dayjs.extend(relativeTime);
+dayjs.locale("vi");
 
 const Wrapper = styled.div`
   width: 100%;
@@ -53,14 +62,27 @@ const Footer = styled.div`
   }
 `;
 
-const PostItem = () => {
+type PropsType = {
+  post: PostDataType;
+};
+
+const PostItem: FC<PropsType> = ({ post }) => {
   return (
     <Wrapper>
       <Header>
-        <Avatar shape="square" size={40} icon={<UserOutlined />} />
+        <Link href="/users/[userId]" as={`/users/${post.USERID}`}>
+          <Avatar
+            shape="square"
+            size={40}
+            icon={<UserOutlined />}
+            // src={post.profilepicture}
+          />
+        </Link>
         <div>
-          <Text strong>Thanos</Text>
-          <Text>2 giờ trước</Text>
+          <Link href="/users/[userId]" as={`/users/${post.USERID}`}>
+            <Text strong>{post.fullname}</Text>
+          </Link>
+          <Text>{dayjs(post.time_added).fromNow()}</Text>
         </div>
       </Header>
       <Divider />
@@ -68,20 +90,22 @@ const PostItem = () => {
         ellipsis={{ rows: 1, expandable: true, symbol: "xem thêm" }}
         style={{ color: "#000" }}
       >
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et inventore
-        obcaecati eum deserunt ut, aperiam quas! Placeat blanditiis consequatur,
-        deserunt facere iusto amet a ad suscipit laudantium unde quidem
-        perferendis!
+        {post.post_content}
       </Paragraph>
-
-      <Image src="/images/microphone-1209816_1920.jpg" alt="" />
+      <Link href="/posts/[postId]" as={`/posts/${post.PID}`}>
+        <Image
+          src={post.url_image || "/images/microphone-1209816_1920.jpg"}
+          alt=""
+        />
+      </Link>
 
       <Divider />
-
-      <Footer>
-        <CommentOutlined size={40} />
-        <Text>984</Text>
-      </Footer>
+      <Link href="/posts/[postId]" as={`/posts/${post.PID}`}>
+        <Footer>
+          <CommentOutlined size={40} />
+          <Text>{post.count || 0}</Text>
+        </Footer>
+      </Link>
     </Wrapper>
   );
 };

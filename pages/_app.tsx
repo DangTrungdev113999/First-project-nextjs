@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           content="width=device-width, minimum-scale=1, maximum-scale=1"
         />
         <meta name="keywords" content="HTML5 Template" />
-        <meta name="description" content="Cộng đồng chế ảnh ZendVN" />
+        <meta name="description" content="Cộng đồng chế ảnh" />
         <meta name="author" content="etheme.com" />
         <title>Cộng đồng chế ảnh ZendVN</title>
         <link

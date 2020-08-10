@@ -54,10 +54,8 @@ const Home: HomeProps = ({ listPosts, userPosts }) => {
 export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
   context
 ) => {
-  console.log(context);
-  const ctx = context as NextPageContext;
-  const [token, currentUser] = getTokenInSsrAndCsr(ctx);
-  const listPostsRes = getListPosts({ postid: 28 });
+  const [token, currentUser] = getTokenInSsrAndCsr(context as NextPageContext);
+  const listPostsRes = getListPosts({ pagesize: 3, currPage: 1 });
   const userPostsRes = getUserPosts({ userid: 2 }, token);
   // const userPostsRes = await getUserPosts({ userid: currentUser?.id }, token);
 
@@ -66,9 +64,11 @@ export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
     userPostsRes,
   ]);
 
+  console.log({ listPosts });
+
   const props = {
-    listPosts: listPosts.data.post,
-    userPosts: userPosts.posts,
+    listPosts: listPosts?.posts || [],
+    userPosts: userPosts?.posts || [],
   };
   return {
     props,

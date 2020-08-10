@@ -13,7 +13,7 @@ import {
 } from "antd";
 import styled from "styled-components";
 
-import { login } from "@/modules/user/api";
+import { loginWithCSR } from "@/modules/user/api";
 import useAuthenticated from "@/customHooks/useAutthenticated";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -85,7 +85,8 @@ const Login: React.FC = () => {
   const onLogin = async () => {
     const values = await form.validateFields(["email", "password"]);
     //@ts-ignore
-    await login(values);
+    const response = await loginWithCSR(values);
+    if (response.status === "") console.log(response);
   };
 
   return (
