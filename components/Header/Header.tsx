@@ -9,7 +9,7 @@ import "./Header.scss";
 
 const Header: FC = () => {
   const [currentUser, setCurrentUser] = useGlobalState("currentUser");
-  const [, setToken] = useGlobalState("token");
+  const [token, setToken] = useGlobalState("token");
   const router = useRouter();
 
   const handleLogout = (): void => {

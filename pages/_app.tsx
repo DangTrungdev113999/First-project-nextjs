@@ -1,24 +1,22 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { useGlobalState } from "@/customHooks/useGlobalState";
-import { getUserById } from "@/modules/user/api";
-import { getTokenInSsrAndCsr } from "@/utils/index";
+// import { useGlobalState } from "@/customHooks/useGlobalState";
+// import { getUserById } from "@/modules/user/api";
+// import { getTokenInSsrAndCsr } from "@/utils/index";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 
 import "@/assets/css/style.css";
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const [, setCureentUser] = useGlobalState("currentUser");
-  const [, setToken] = useGlobalState("token");
-
-  useMemo(() => {
-    setCureentUser(pageProps.userInfo);
-    setToken(pageProps.token);
-  }, []);
+  // with SSR set at server
+  // useMemo(() => {
+  //   setCureentUser(pageProps.userInfo);
+  //   setToken(pageProps.token);
+  // }, []);
 
   const pathname = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
@@ -69,17 +67,18 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
 
-  const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
-  const response =
-    currentUser?.id && currentUser?.email
-      ? await getUserById(currentUser.id)
-      : null;
+  // login With SSR
+  // const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
+  // const response =
+  //   currentUser?.id && currentUser?.email
+  //     ? await getUserById(currentUser.id)
+  //     : null;
 
   return {
     pageProps: {
       ...appProps.pageProps,
-      userInfo: response?.user,
-      token: token,
+      // userInfo: response?.user,
+      // token: token,
     },
   };
 };

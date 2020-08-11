@@ -12,10 +12,13 @@ import {
   Checkbox,
 } from "antd";
 import styled from "styled-components";
+import JsCookie from "js-cookie";
 
-import { loginWithCSR } from "@/modules/user/api";
+import { loginWithCSR, getUserById } from "@/modules/user/api";
 import useAuthenticated from "@/customHooks/useAutthenticated";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { parseJwt } from "../utils";
 
 const { Title, Text } = Typography;
 
@@ -49,6 +52,9 @@ const Login: React.FC = () => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState<FormLogin>(initFormData);
   const [checked, setChecked] = useState(false);
+  const [, setToken] = useGlobalState("token");
+  const [, setCureentUser] = useGlobalState("currentUser");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const error = router.query.error;
     if (error === "failed") {
@@ -83,10 +89,31 @@ const Login: React.FC = () => {
   };
 
   const onLogin = async () => {
+    setLoading(true);
     const values = await form.validateFields(["email", "password"]);
-    //@ts-ignore
-    const response = await loginWithCSR(values);
-    if (response.status === "") console.log(response);
+    try {
+      //@ts-ignore
+      const response = await loginWithCSR(values);
+      if (response.status === 200) {
+        const currentUser = parseJwt(response.token);
+
+        const userRes =
+          currentUser?.id && currentUser?.email
+            ? await getUserById(currentUser.id)
+            : null;
+
+        JsCookie.set("token", response.token);
+        setToken(response.token);
+        setCureentUser(userRes?.user);
+
+        router.push("/");
+      } else {
+        message.error(`Đăng nhập thất bại: ${response.error}`);
+      }
+    } catch (error) {
+      message.error(`${error.message}`);
+    }
+    setLoading(false);
   };
 
   return (
@@ -148,7 +175,7 @@ const Login: React.FC = () => {
                 htmlType="submit"
                 style={{ width: "100%" }}
                 size="large"
-                // loading={loading}
+                loading={loading}
               >
                 Đăng nhập
               </Button>

@@ -64,8 +64,6 @@ export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
     userPostsRes,
   ]);
 
-  console.log({ listPosts });
-
   const props = {
     listPosts: listPosts?.posts || [],
     userPosts: userPosts?.posts || [],
