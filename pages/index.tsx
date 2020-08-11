@@ -11,11 +11,6 @@ import { HomeSideBar } from "@/components/HomeSlideBar";
 import { Row, Col } from "antd";
 import { getListPosts, getUserPosts } from "@/modules/posts/api";
 import { getTokenInSsrAndCsr } from "@/utils/index";
-const Wrapper = styled.div`
-  width: 1100px;
-  margin: 0 auto;
-  margin-top: 40px;
-`;
 
 export type PostDataType = {
   PID: string;
@@ -38,7 +33,7 @@ type HomeProps = FC<InferGetServerSidePropsType<typeof getServerSideProps>>;
 
 const Home: HomeProps = ({ listPosts, userPosts }) => {
   return (
-    <Wrapper>
+    <>
       <Row gutter={[20, 0]}>
         <Col span={16} md={16} lg={16}>
           <PostListItem listPosts={listPosts} />
@@ -47,7 +42,7 @@ const Home: HomeProps = ({ listPosts, userPosts }) => {
           <HomeSideBar userPosts={userPosts} />
         </Col>
       </Row>
-    </Wrapper>
+    </>
   );
 };
 
@@ -56,8 +51,8 @@ export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
 ) => {
   const [token, currentUser] = getTokenInSsrAndCsr(context as NextPageContext);
   const listPostsRes = getListPosts({ pagesize: 3, currPage: 1 });
-  const userPostsRes = getUserPosts({ userid: 2 }, token);
-  // const userPostsRes = await getUserPosts({ userid: currentUser?.id }, token);
+  // const userPostsRes = getUserPosts({ userid: 2 }, token);
+  const userPostsRes = await getUserPosts({ userid: currentUser?.id }, token);
 
   const [listPosts, userPosts] = await Promise.all([
     listPostsRes,

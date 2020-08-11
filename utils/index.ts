@@ -77,3 +77,11 @@ export const toQuerryString = (params: Record<string, any>) => {
     }, "?")
     .slice(0, -1);
 };
+
+export const hightlightText = (text: string, query: string) => {
+  const index = text.indexOf(query);
+  const afterStr = text.substring(0, index);
+  const middleStr = text.substring(index, afterStr.length + query.length);
+  const beforeStr = text.substring(afterStr.length + query.length);
+  return `${afterStr}<mark>${middleStr}</mark>${beforeStr}`;
+};

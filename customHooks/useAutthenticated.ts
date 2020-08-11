@@ -11,7 +11,7 @@ const useAuthenticated = (target?: string) => {
     if (!(token && userInfo.id && userInfo.email)) {
       router.push(`/${target}`);
     } else {
-      router.push("/");
+      router.push(`/${target}`);
     }
   }, [token]);
 };

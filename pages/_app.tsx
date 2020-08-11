@@ -1,22 +1,36 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-// import { useGlobalState } from "@/customHooks/useGlobalState";
-// import { getUserById } from "@/modules/user/api";
-// import { getTokenInSsrAndCsr } from "@/utils/index";
+import React, { useMemo } from "react";
+import { Layout } from "antd";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import React, { useMemo, useEffect } from "react";
+import styled from "styled-components";
+
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { getUserById } from "@/modules/user/api";
+import { getTokenInSsrAndCsr } from "@/utils/index";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 
 import "@/assets/css/style.css";
+const { Header: HeaderAnt, Content, Footer: FooterAnt } = Layout;
+
+const ContentStyled = styled(Content)`
+  width: 1100px;
+  margin: 0 auto;
+  margin-top: 100px;
+`;
+
 function MyApp({ Component, pageProps, router }: AppProps) {
-  // with SSR set at server
-  // useMemo(() => {
-  //   setCureentUser(pageProps.userInfo);
-  //   setToken(pageProps.token);
-  // }, []);
+  const [, setToken] = useGlobalState("token");
+  const [, setCureentUser] = useGlobalState("currentUser");
+
+  // with SSR set at server (when f5 page)
+  useMemo(() => {
+    setCureentUser(pageProps.userInfo);
+    setToken(pageProps.token);
+  }, []);
 
   const pathname = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
@@ -55,11 +69,23 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         />
         <link rel="stylesheet" href="/fonts/emotion/style.css" />
       </Head>
-      {!hiddenHeader && <Header />}
-      <main>
-        <Component {...pageProps} />
-      </main>
-      {!hiddenFooter && <Footer />}
+      <Layout>
+        {!hiddenHeader && (
+          <HeaderAnt style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+            <Header />
+          </HeaderAnt>
+        )}
+        <main>
+          <ContentStyled>
+            <Component {...pageProps} />
+          </ContentStyled>
+        </main>
+        {!hiddenFooter && (
+          <FooterAnt>
+            <Footer />
+          </FooterAnt>
+        )}
+      </Layout>
     </div>
   );
 }
@@ -68,17 +94,17 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
 
   // login With SSR
-  // const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
-  // const response =
-  //   currentUser?.id && currentUser?.email
-  //     ? await getUserById(currentUser.id)
-  //     : null;
+  const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
+  const response =
+    currentUser?.id && currentUser?.email
+      ? await getUserById(currentUser.id)
+      : null;
 
   return {
     pageProps: {
       ...appProps.pageProps,
-      // userInfo: response?.user,
-      // token: token,
+      userInfo: response?.user,
+      token: token,
     },
   };
 };

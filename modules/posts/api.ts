@@ -19,3 +19,6 @@ export const getUserPosts = async (
       },
     }
   );
+
+export const searchPostLists = async (params: Record<string, any>) =>
+  await request(`${BASE_URL}/post/search.php${toQuerryString(params)}`);

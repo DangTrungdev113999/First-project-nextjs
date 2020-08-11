@@ -12,7 +12,7 @@ const request = async (url: string, options: Record<string, any> = {}) => {
       params,
     });
 
-    console.log("AXIOS RESPONSE: ", method, url, data, params, response.data);
+    // console.log("AXIOS RESPONSE: ", method, url, data, params, response.data);
 
     return response.data;
   } catch (e) {

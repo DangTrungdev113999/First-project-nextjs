@@ -26,7 +26,9 @@ const HomeSideBar: FC<PropsType> = ({ userPosts }) => {
             .map((post) => <PostItem post={post} key={post.PID} />)
         ) : (
           <Link href="/posts/create">
-            <Text>Bạn chưa bó bài viết nào truy cập vào đây để đăng bài </Text>
+            <Text underline strong style={{ cursor: "pointer" }}>
+              Bạn chưa bó bài viết nào truy cập vào đây để đăng bài{" "}
+            </Text>
           </Link>
         )
       ) : (

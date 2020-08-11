@@ -8,6 +8,9 @@ import Link from "next/link";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi";
+import { hightlightText } from "@/utils/index";
+
+import "./PostItem.scss";
 
 dayjs.extend(relativeTime);
 dayjs.locale("vi");
@@ -64,9 +67,11 @@ const Footer = styled.div`
 
 type PropsType = {
   post: PostDataType;
+  isHightlight?: boolean;
+  query?: string;
 };
 
-const PostItem: FC<PropsType> = ({ post }) => {
+const PostItem: FC<PropsType> = ({ post, isHightlight, query }) => {
   return (
     <Wrapper>
       <Header>
@@ -80,7 +85,16 @@ const PostItem: FC<PropsType> = ({ post }) => {
         </Link>
         <div>
           <Link href="/users/[userId]" as={`/users/${post.USERID}`}>
-            <Text strong>{post.fullname}</Text>
+            <Text strong>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html:
+                    isHightlight && query
+                      ? hightlightText(post.fullname, query)
+                      : post.fullname,
+                }}
+              />
+            </Text>
           </Link>
           <Text>{dayjs(post.time_added).fromNow()}</Text>
         </div>
@@ -90,7 +104,14 @@ const PostItem: FC<PropsType> = ({ post }) => {
         ellipsis={{ rows: 1, expandable: true, symbol: "xem thêm" }}
         style={{ color: "#000" }}
       >
-        {post.post_content}
+        <span
+          dangerouslySetInnerHTML={{
+            __html:
+              isHightlight && query
+                ? hightlightText(post.post_content, query)
+                : post.post_content,
+          }}
+        />
       </Paragraph>
       <Link href="/posts/[postId]" as={`/posts/${post.PID}`}>
         <Image
