@@ -1,0 +1,15 @@
+#box,
+.box1 {
+  width: 200px;
+  height: 200px;
+  margin: 50px;
+  border-radius: 10px;
+  background-color: tomato;
+  box-shadow: 1px 1px 5px gray;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.wrapper {
+  display: flex;
+}
