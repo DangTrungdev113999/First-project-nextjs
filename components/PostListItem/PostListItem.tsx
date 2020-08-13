@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { PostDataType } from "pages";
 import { PostItem } from "../Postitem";
-import { getListPosts } from "@/modules/posts/api";
+import { fetchListPosts } from "@/modules/posts/api";
 import { LoadingOutlined } from "@ant-design/icons";
 
 type PropsType = {
@@ -25,7 +25,7 @@ const PostListItem: FC<PropsType> = ({ listPosts }) => {
   }, [query.pagesize, query.currPage]);
 
   async function fetchMorePosts() {
-    const listPostsRes = await getListPosts({
+    const listPostsRes = await fetchListPosts({
       pagesize: query.pagesize,
       currPage: query.currPage,
     });

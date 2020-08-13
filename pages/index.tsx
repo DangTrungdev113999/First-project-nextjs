@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { PostListItem } from "@/components/PostListItem";
 import { HomeSideBar } from "@/components/HomeSlideBar";
 import { Row, Col } from "antd";
-import { getListPosts, getUserPosts } from "@/modules/posts/api";
+import { fetchListPosts, getUserPosts } from "@/modules/posts/api";
 import { getTokenInSsrAndCsr } from "@/utils/index";
 
 export type PostDataType = {
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
   context
 ) => {
   const [token, currentUser] = getTokenInSsrAndCsr(context as NextPageContext);
-  const listPostsRes = getListPosts({ pagesize: 3, currPage: 1 });
+  const listPostsRes = fetchListPosts({ pagesize: 3, currPage: 1 });
   // const userPostsRes = getUserPosts({ userid: 2 }, token);
   const userPostsRes = await getUserPosts({ userid: currentUser?.id }, token);
 
