@@ -4,32 +4,29 @@
     align-items: center;
   }
   &-logo {
-    width: 200px;
-    font-size: 24px;
+    width: 150px;
+    font-size: 18px;
     font-weight: bold;
-    color: #fff;
     cursor: pointer;
   }
   &-search {
-    width: 550px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 600px;
+    margin-left: 100px;
   }
 
   &-upload {
     margin-left: 50px;
   }
+
   &-tail {
     flex-grow: 1;
-    display: flex;
     justify-content: flex-end;
-    align-items: center;
-    padding-right: 30px;
+    display: flex;
     &__login {
       width: 100px;
     }
   }
+
   &-user {
     display: flex;
     justify-content: center;
@@ -37,7 +34,7 @@
     &__name {
       margin-left: 20px;
       margin-top: 5px;
-      color: #fff !important;
+      color: #000 !important;
     }
   }
 }

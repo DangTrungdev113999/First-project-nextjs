@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Layout } from "antd";
+import React, { useMemo, useState } from "react";
+import { Layout, Menu } from "antd";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import styled from "styled-components";
@@ -14,12 +14,33 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 
 import "@/assets/css/style.css";
-const { Header: HeaderAnt, Content, Footer: FooterAnt } = Layout;
+import { LeftSideBar } from "@/components/SlideBar";
+import { fetchCategories } from "@/modules/posts/api";
+const { Header: HeaderAnt, Content, Footer: FooterWrapper, Sider } = Layout;
 
-const ContentStyled = styled(Content)`
-  width: 1100px;
-  margin: 0 auto;
+const HeaderWrapper = styled(HeaderAnt)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px lightgray;
+  z-index: 2;
+`;
+
+const ContentWrapper = styled(Content)`
+  width: 1200px;
+  max-width: 100%;
+  margin-left: 250px;
   margin-top: 100px;
+  overflow: initial;
+`;
+
+const SiderWrapper = styled(Sider)`
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  z-index: 1;
 `;
 
 function MyApp({ Component, pageProps, router }: AppProps) {
@@ -32,18 +53,21 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     setToken(pageProps.token);
   }, []);
 
-  const pathname = router.pathname;
+  const currentPath = router.pathname;
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
-    const currentPath = pathname;
     return excludes.indexOf(currentPath) !== -1;
-  }, [pathname]);
+  }, [currentPath]);
 
   const hiddenHeader = useMemo((): boolean => {
     const excludes = ["/login", "/register"];
-    const currentPath = pathname;
     return excludes.indexOf(currentPath) !== -1;
-  }, [pathname]);
+  }, [currentPath]);
+
+  const hideSidebar = useMemo((): boolean => {
+    const excludes = ["/login", "/register"];
+    return excludes.indexOf(currentPath) !== -1;
+  }, [currentPath]);
 
   return (
     <div id="root">
@@ -71,19 +95,24 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       </Head>
       <Layout>
         {!hiddenHeader && (
-          <HeaderAnt style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+          <HeaderWrapper>
             <Header />
-          </HeaderAnt>
+          </HeaderWrapper>
         )}
-        <main>
-          <ContentStyled>
+        <Layout hasSider>
+          {!hideSidebar && (
+            <SiderWrapper theme="light" collapsible>
+              <LeftSideBar categories={pageProps.categories} />
+            </SiderWrapper>
+          )}
+          <ContentWrapper>
             <Component {...pageProps} />
-          </ContentStyled>
-        </main>
+          </ContentWrapper>
+        </Layout>
         {!hiddenFooter && (
-          <FooterAnt>
+          <FooterWrapper>
             <Footer />
-          </FooterAnt>
+          </FooterWrapper>
         )}
       </Layout>
     </div>
@@ -95,15 +124,18 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 
   // login With SSR
   const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
-  const response =
+  const currentUserRes =
     currentUser?.id && currentUser?.email
       ? await getUserById(currentUser.id)
       : null;
 
+  const categoryRes = await fetchCategories();
+
   return {
     pageProps: {
       ...appProps.pageProps,
-      userInfo: response?.user,
+      userInfo: currentUserRes?.user,
+      categories: categoryRes.categories || [],
       token: token,
     },
   };

@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import JsCookie from "js-cookie";
@@ -18,13 +18,8 @@ const Header: FC = () => {
   const [currentUser, setCurrentUser] = useGlobalState("currentUser");
   const [, setToken] = useGlobalState("token");
   const [modal, contextHolder] = Modal.useModal();
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  function fetchCategories() {}
 
   const onHandeSearch = (query: string): void => {
     if (!query) return;
@@ -49,27 +44,29 @@ const Header: FC = () => {
     </Menu>
   );
 
+  const menu1 = (
+    <div className="navbar">
+      {categories.map((item) => (
+        <div key={item.id} className="navbar-item">
+          {item.text}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="header-wrapper">
       <Link href="/">
         <div className="header-logo">DangTrungDev</div>
       </Link>
-      <Menu theme="dark" mode="horizontal">
-        <SubMenu key="sub1" title="Danh mục">
-          <Menu.Item key="1">option1</Menu.Item>
-          <Menu.Item key="2">option2</Menu.Item>
-          <Menu.Item key="3">option3</Menu.Item>
-          <Menu.Item key="4">option4</Menu.Item>
-        </SubMenu>
-        <Menu.Item key="search" className="header-search">
-          <Search
-            size="large"
-            className="header-search__input"
-            placeholder="Tim kiếm"
-            onSearch={onHandeSearch}
-          />
-        </Menu.Item>
-      </Menu>
+      <div className="header-search">
+        <Search
+          size="large"
+          className="header-search__input"
+          placeholder="Tim kiếm"
+          onSearch={onHandeSearch}
+        />
+      </div>
       <Button type="primary" size="large" className="header-upload">
         <UploadOutlined />
         Upload
@@ -89,7 +86,7 @@ const Header: FC = () => {
           </Dropdown>
         ) : (
           <Link href="/login">
-            <Button type="dashed" size="large" className="header-tail__login">
+            <Button type="primary" size="large" className="header-tail__login">
               login
             </Button>
           </Link>

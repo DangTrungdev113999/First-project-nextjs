@@ -1,5 +1,5 @@
 import React from "react";
-import { HomeSideBar } from "@/components/HomeSlideBar";
+import { HomeSideBar } from "@/components/SlideBar";
 import PostDetailContent from "@/components/PostDetail";
 
 const PostDetail1: React.FC = () => {
