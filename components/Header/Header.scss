@@ -18,10 +18,15 @@
     margin-left: 50px;
   }
 
+  &-mode {
+    margin-left: 50px;
+  }
+
   &-tail {
     flex-grow: 1;
-    justify-content: flex-end;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
     &__login {
       width: 100px;
     }

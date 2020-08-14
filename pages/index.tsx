@@ -1,10 +1,9 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
   NextPageContext,
 } from "next";
-import styled from "styled-components";
 
 import { PostListItem } from "@/components/PostListItem";
 import { HomeSideBar } from "@/components/SlideBar";

@@ -14,9 +14,14 @@ type TypeCurrentUser = {
 type TypeInitalState = {
   currentUser: TypeCurrentUser | null;
   token?: string | null;
+  mode?: "light" | "dark";
 };
 
-const initialState: TypeInitalState = { currentUser: null, token: "" };
+const initialState: TypeInitalState = {
+  currentUser: null,
+  token: "",
+  mode: "light",
+};
 const { useGlobalState } = createGlobalState(initialState);
 
 export { useGlobalState };

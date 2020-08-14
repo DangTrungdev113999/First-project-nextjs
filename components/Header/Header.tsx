@@ -3,20 +3,29 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import JsCookie from "js-cookie";
 
-import { Menu, Input, Typography, Button, Dropdown, Avatar, Modal } from "antd";
+import {
+  Menu,
+  Input,
+  Typography,
+  Button,
+  Dropdown,
+  Avatar,
+  Modal,
+  Switch,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 import { useGlobalState } from "@/customHooks/useGlobalState";
 
 import "./Header.scss";
-
-const { SubMenu } = Menu;
+import { Text } from "../Customs";
 const { Title } = Typography;
 const { Search } = Input;
 
 const Header: FC = () => {
   const [currentUser, setCurrentUser] = useGlobalState("currentUser");
   const [, setToken] = useGlobalState("token");
+  const [mode, setMode] = useGlobalState("mode");
   const [modal, contextHolder] = Modal.useModal();
   const [categories, setCategories] = useState([]);
   const router = useRouter();
@@ -38,22 +47,19 @@ const Header: FC = () => {
     });
   };
 
+  const changeMode = (val: boolean) => {
+    if (val) {
+      setMode("light");
+    } else {
+      setMode("dark");
+    }
+  };
+
   const menu = (
     <Menu>
       <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
     </Menu>
   );
-
-  const menu1 = (
-    <div className="navbar">
-      {categories.map((item) => (
-        <div key={item.id} className="navbar-item">
-          {item.text}
-        </div>
-      ))}
-    </div>
-  );
-
   return (
     <div className="header-wrapper">
       <Link href="/">
@@ -71,6 +77,12 @@ const Header: FC = () => {
         <UploadOutlined />
         Upload
       </Button>
+      <div className="header-mode">
+        <Text strong mode={mode}>
+          Theme
+        </Text>
+        <Switch defaultChecked onChange={changeMode} />
+      </div>
       <div className="header-tail">
         {currentUser?.fullname ? (
           <Dropdown overlay={menu}>

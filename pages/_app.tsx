@@ -46,11 +46,13 @@ const SiderWrapper = styled(Sider)`
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [, setToken] = useGlobalState("token");
   const [, setCureentUser] = useGlobalState("currentUser");
+  const [mode, setMode] = useGlobalState("mode");
 
   // with SSR set at server (when f5 page)
   useMemo(() => {
     setCureentUser(pageProps.userInfo);
     setToken(pageProps.token);
+    setMode(pageProps.mode);
   }, []);
 
   const currentPath = router.pathname;
@@ -101,7 +103,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         )}
         <Layout hasSider>
           {!hideSidebar && (
-            <SiderWrapper theme="light" collapsible>
+            <SiderWrapper theme={mode} collapsible>
               <LeftSideBar categories={pageProps.categories} />
             </SiderWrapper>
           )}
@@ -137,6 +139,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
       userInfo: currentUserRes?.user,
       categories: categoryRes.categories || [],
       token: token,
+      mode: "light",
     },
   };
 };
