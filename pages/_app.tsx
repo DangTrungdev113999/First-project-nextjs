@@ -46,11 +46,13 @@ const SiderWrapper = styled(Sider)`
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [, setToken] = useGlobalState("token");
   const [, setCureentUser] = useGlobalState("currentUser");
+  const [, setCategories] = useGlobalState("categories");
   const [mode, setMode] = useGlobalState("mode");
 
   // with SSR set at server (when f5 page)
   useMemo(() => {
     setCureentUser(pageProps.userInfo);
+    setCategories(pageProps.categories);
     setToken(pageProps.token);
     setMode(pageProps.mode);
   }, []);
@@ -104,7 +106,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <Layout hasSider>
           {!hideSidebar && (
             <SiderWrapper theme={mode} collapsible>
-              <LeftSideBar categories={pageProps.categories} />
+              <LeftSideBar />
             </SiderWrapper>
           )}
           <ContentWrapper>
@@ -126,12 +128,15 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
 
   // login With SSR
   const [token, currentUser] = getTokenInSsrAndCsr(appContext.ctx);
-  const currentUserRes =
-    currentUser?.id && currentUser?.email
-      ? await getUserById(currentUser.id)
-      : null;
+  const currentUserPr =
+    currentUser?.id && currentUser?.email ? getUserById(currentUser.id) : null;
 
-  const categoryRes = await fetchCategories();
+  const categoryPr = fetchCategories();
+
+  const [currentUserRes, categoryRes] = await Promise.all([
+    currentUserPr,
+    categoryPr,
+  ]);
 
   return {
     pageProps: {

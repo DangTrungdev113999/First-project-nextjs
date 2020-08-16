@@ -20,8 +20,27 @@ export const fetchserPosts = async (
     }
   );
 
-export const searchPostLists = async (params: Record<string, any>) =>
+type TypeSearchPosts = {
+  pagesize: string;
+  currPage: string;
+  query: string;
+};
+
+export const searchPostLists = async (params: TypeSearchPosts) =>
   await request(`${BASE_URL}/post/search.php${toQuerryString(params)}`);
 
 export const fetchCategories = async () =>
   await request(`${BASE_URL}/categories/index.php`);
+
+type TypeSearchPostsByCategoryId = {
+  pagesize: number;
+  currPage: number;
+  tagIndex: string;
+};
+
+export const searchPostListsByCategoryId = async (
+  params: TypeSearchPostsByCategoryId
+) =>
+  await request(
+    `${BASE_URL}/post/getListByCategory.php${toQuerryString(params)}`
+  );

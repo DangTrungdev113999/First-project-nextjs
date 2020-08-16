@@ -81,7 +81,11 @@ const Header: FC = () => {
         <Text strong mode={mode}>
           Theme
         </Text>
-        <Switch defaultChecked onChange={changeMode} />
+        <Switch
+          defaultChecked
+          onChange={changeMode}
+          style={{ marginLeft: "20px" }}
+        />
       </div>
       <div className="header-tail">
         {currentUser?.fullname ? (

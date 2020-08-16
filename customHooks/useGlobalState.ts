@@ -11,14 +11,21 @@ type TypeCurrentUser = {
   status: string;
 };
 
+type TypeCategories = {
+  id: string;
+  text: string;
+};
+
 type TypeInitalState = {
   currentUser: TypeCurrentUser | null;
+  categories: TypeCategories[] | [];
   token?: string | null;
   mode?: "light" | "dark";
 };
 
 const initialState: TypeInitalState = {
   currentUser: null,
+  categories: [],
   token: "",
   mode: "light",
 };
