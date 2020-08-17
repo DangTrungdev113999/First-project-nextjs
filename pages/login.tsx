@@ -125,12 +125,7 @@ const Login: React.FC = () => {
           </Title>
         </Col>
         <Col span={24} md={24}>
-          <Form
-            form={form}
-            onFinish={onLogin}
-            method="POST"
-            action="/api/login"
-          >
+          <Form form={form} onFinish={onLogin}>
             <Form.Item
               name="email"
               initialValue={formData.email}

@@ -30,7 +30,8 @@ const HeaderWrapper = styled(HeaderAnt)`
 const ContentWrapper = styled(Content)`
   width: 1200px;
   max-width: 100%;
-  margin-left: 250px;
+  //@ts-ignore
+  margin-left: ${({ hideSidebar }) => (hideSidebar ? 0 : "250px")};
   margin-top: 100px;
   overflow: initial;
 `;
@@ -69,7 +70,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }, [currentPath]);
 
   const hideSidebar = useMemo((): boolean => {
-    const excludes = ["/login", "/register"];
+    const excludes = ["/login", "/register", "/users/profile", "/posts/create"];
     return excludes.indexOf(currentPath) !== -1;
   }, [currentPath]);
 
@@ -85,7 +86,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <meta name="keywords" content="HTML5 Template" />
         <meta name="description" content="Cộng đồng chế ảnh" />
         <meta name="author" content="etheme.com" />
-        <title>Cộng đồng chế ảnh ZendVN</title>
+        <title>Cộng đồng chế ảnh </title>
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
           rel="stylesheet"
@@ -103,13 +104,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
             <Header />
           </HeaderWrapper>
         )}
-        <Layout hasSider>
+        <Layout>
           {!hideSidebar && (
             <SiderWrapper theme={mode} collapsible>
               <LeftSideBar />
             </SiderWrapper>
           )}
-          <ContentWrapper>
+          <ContentWrapper hasSider={hideSidebar}>
             <Component {...pageProps} />
           </ContentWrapper>
         </Layout>

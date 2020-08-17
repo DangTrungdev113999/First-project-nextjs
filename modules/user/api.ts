@@ -10,6 +10,12 @@ type TypeLogin = {
   password: string;
 };
 
+type TypeUpdateProfile = {
+  fullname: string;
+  gender: string;
+  description: string;
+};
+
 import request from "@/utils/request";
 import { BASE_URL } from "@/constants/index";
 
@@ -39,3 +45,12 @@ export const register = async (data: TypeRegister) =>
 
 export const getUserById = async (userId: string) =>
   await request(`${BASE_URL}/member/member.php?userid=${userId}`);
+
+export const updateProfile = async (data: TypeUpdateProfile, token: string) =>
+  await request(`${BASE_URL}/member/update.php`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data,
+  });

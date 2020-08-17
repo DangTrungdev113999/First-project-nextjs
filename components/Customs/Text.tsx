@@ -17,7 +17,7 @@ type PropsType = {
 
 const Text: React.FC<PropsType> = ({
   title,
-  mode,
+  mode = "light",
   lever,
   strong = false,
   children,
@@ -29,7 +29,7 @@ const Text: React.FC<PropsType> = ({
           {children}
         </TextAntdStyled>
       ) : (
-        <Title />
+        <Title lever={lever} />
       )}
     </>
   );
