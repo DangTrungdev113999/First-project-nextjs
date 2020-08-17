@@ -8,7 +8,7 @@ import {
 import { PostListItem } from "@/components/PostListItem";
 import { HomeSideBar } from "@/components/SlideBar";
 import { Row, Col } from "antd";
-import { fetchListPosts, fetchserPosts } from "@/modules/posts/api";
+import { fetchListPosts, fetchPostsByUserId } from "@/modules/posts/api";
 import { getTokenInSsrAndCsr } from "@/utils/index";
 
 export type PostDataType = {
@@ -50,8 +50,11 @@ export const getServerSideProps: GetServerSideProps<HomePropsDataType> = async (
 ) => {
   const [token, currentUser] = getTokenInSsrAndCsr(context as NextPageContext);
   const listPostsRes = fetchListPosts({ pagesize: 3, currPage: 1 });
-  // const userPostsRes = fetchserPosts({ userid: 2 }, token);
-  const userPostsRes = await fetchserPosts({ userid: currentUser?.id }, token);
+  // const userPostsRes = fetchPostsByUserId({ userid: 2 }, token);
+  const userPostsRes = await fetchPostsByUserId(
+    { userid: currentUser?.id },
+    token
+  );
 
   const [listPosts, userPosts] = await Promise.all([
     listPostsRes,

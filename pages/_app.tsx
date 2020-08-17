@@ -58,7 +58,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }, []);
 
   const currentPath = router.pathname;
-  console.log({ currentPath });
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
     return excludes.indexOf(currentPath) !== -1;
@@ -70,7 +69,12 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }, [currentPath]);
 
   const hideSidebar = useMemo((): boolean => {
-    const excludes = ["/login", "/register", "/users/profile"];
+    const excludes = [
+      "/login",
+      "/register",
+      "/users/profile",
+      "/users/[userId]",
+    ];
     return excludes.indexOf(currentPath) !== -1;
   }, [currentPath]);
 

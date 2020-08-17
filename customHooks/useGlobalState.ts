@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalState } from "react-hooks-global-state";
 
-type TypeCurrentUser = {
+export type TypeUser = {
   USERID: string;
   email: string;
   fullname: string;
@@ -9,6 +9,9 @@ type TypeCurrentUser = {
   description: string;
   profilepicture: string;
   status: string;
+  profileviews?: string;
+  youviewed?: string;
+  yourviewed?: string;
 };
 
 type TypeCategories = {
@@ -17,7 +20,7 @@ type TypeCategories = {
 };
 
 type TypeInitalState = {
-  currentUser: TypeCurrentUser | null;
+  currentUser: TypeUser | null;
   categories: TypeCategories[] | [];
   token?: string | null;
   mode?: "light" | "dark";
