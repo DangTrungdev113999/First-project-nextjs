@@ -1,6 +1,7 @@
 import React from "react";
 
-const Profile: React.FC = () => {
+const Profile: React.FC
+  = () => {
   return (
     <div className="ass1-login">
       <div className="ass1-login__content">
