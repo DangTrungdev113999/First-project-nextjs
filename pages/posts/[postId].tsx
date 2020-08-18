@@ -9,9 +9,7 @@ const PostDetail1: React.FC = () => {
         <div className="col-lg-8">
           <PostDetailContent />
         </div>
-        <div className="col-lg-4">
-          <HomeSideBar />
-        </div>
+        <div className="col-lg-4">{/* <HomeSideBar /> */}</div>
       </div>
     </div>
   );
