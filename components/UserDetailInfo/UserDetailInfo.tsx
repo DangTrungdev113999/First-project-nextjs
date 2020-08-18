@@ -1,16 +1,20 @@
 import React from "react";
-import { TypeUser } from "@/customHooks/useGlobalState";
 import { useRouter } from "next/router";
+import { TypeUser } from "@/constants/typeData";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import Link from "next/link";
+
 type PropsType = {
   userDetailInfo: TypeUser;
 };
 
 const UserDetailInfo: React.FC<PropsType> = ({ userDetailInfo }) => {
   const router = useRouter();
-  const userId = router.query.userId;
+
+  const [currentUser] = useGlobalState("currentUser");
 
   return (
-    <div className="ass1-head-user">
+    <div className="">
       <div className="ass1-head-user__content">
         <div className="ass1-head-user__image">
           <a href="#">
@@ -28,25 +32,29 @@ const UserDetailInfo: React.FC<PropsType> = ({ userDetailInfo }) => {
               )}
             </div>
             <div className="w-100" />
-            {userId !== userDetailInfo.USERID && (
+            {currentUser.USERID !== userDetailInfo.USERID && (
               <a href="#" className="ass1-head-user__btn-follow ass1-btn">
                 Theo dõi
               </a>
             )}
-            {userId === userDetailInfo.USERID && (
+            {currentUser.USERID === userDetailInfo.USERID && (
               <>
-                <a
-                  href="thay-doi-password.html"
-                  className="ass1-head-user__btn-follow ass1-btn"
-                >
-                  Đổi mật khẩu
-                </a>
-                <a
-                  href="profile.html"
-                  className="ass1-head-user__btn-follow ass1-btn"
-                >
-                  Profile
-                </a>
+                <Link href="/users/changePassword">
+                  <a
+                    href="thay-doi-password.html"
+                    className="ass1-head-user__btn-follow ass1-btn"
+                  >
+                    Đổi mật khẩu
+                  </a>
+                </Link>
+                <Link href="/users/profile">
+                  <a
+                    href="profile.html"
+                    className="ass1-head-user__btn-follow ass1-btn"
+                  >
+                    Profile
+                  </a>
+                </Link>
               </>
             )}
 

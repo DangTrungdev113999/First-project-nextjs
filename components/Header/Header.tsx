@@ -91,13 +91,18 @@ const Header: FC = () => {
         {currentUser?.fullname ? (
           <Dropdown overlay={menu}>
             <div className="header-user">
-              <Avatar
-                size={40}
-                src={currentUser.profilepicture || "/images/avatar-02.png"}
-              />
-              <Title level={4} className="header-user__name">
-                {currentUser.fullname}
-              </Title>
+              <Link href="/users/[userId]" as={`/users/${currentUser.USERID}`}>
+                <Avatar
+                  size={40}
+                  src={currentUser.profilepicture || "/images/avatar-02.png"}
+                  style={{cursor: 'pointer'}}
+                />
+              </Link>
+              <Link href="/users/[userId]" as={`/users/${currentUser.USERID}`}>
+                <Title level={4} className="header-user__name">
+                  {currentUser.fullname}
+                </Title>
+              </Link>
             </div>
           </Dropdown>
         ) : (

@@ -10,18 +10,7 @@ import { HomeSideBar } from "@/components/SlideBar";
 import { Row, Col } from "antd";
 import { fetchListPosts, fetchPostsByUserId } from "@/modules/posts/api";
 import { getTokenInSsrAndCsr } from "@/utils/index";
-
-export type PostDataType = {
-  PID: string;
-  USERID: string;
-  fullname: string;
-  profilepicture: string;
-  url_image: string;
-  post_content: string;
-  time_added: string;
-  status: string;
-  count: string | null;
-};
+import { PostDataType } from "@/constants/typeData";
 
 type HomePropsDataType = {
   listPosts: PostDataType[];

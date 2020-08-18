@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { Avatar, Typography, Divider } from "antd";
 import { UserOutlined, CommentOutlined } from "@ant-design/icons";
-import { PostDataType } from "pages";
 import dayjs from "dayjs";
 import Link from "next/link";
 
@@ -10,7 +9,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi";
 import { hightlightText } from "@/utils/index";
 
-import "./PostItem.scss";
+import { PostDataType } from "@/constants/typeData";
+import "@/assets/css/global.scss";
 
 dayjs.extend(relativeTime);
 dayjs.locale("vi");

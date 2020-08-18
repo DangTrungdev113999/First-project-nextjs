@@ -1,18 +1,6 @@
 import React from "react";
 import { createGlobalState } from "react-hooks-global-state";
-
-export type TypeUser = {
-  USERID: string;
-  email: string;
-  fullname: string;
-  gender: string;
-  description: string;
-  profilepicture: string;
-  status: string;
-  profileviews?: string;
-  youviewed?: string;
-  yourviewed?: string;
-};
+import { TypeUser } from "@/constants/typeData";
 
 type TypeCategories = {
   id: string;

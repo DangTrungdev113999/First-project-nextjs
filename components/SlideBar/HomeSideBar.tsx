@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { PostDataType } from "pages";
 import { Typography, Button, Space } from "antd";
 import Link from "next/link";
 import { useGlobalState } from "@/customHooks/useGlobalState";
 import { PostItem } from "../Postitem";
+import { PostDataType } from "@/constants/typeData";
 
 const { Text, Link: LinkAnt } = Typography;
 

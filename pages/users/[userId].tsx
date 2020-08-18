@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { UserDetailInfo } from "@/components/UserDetailInfo";
 import { UserPosts } from "@/components/UserPosts";
 import { NextPage, NextPageContext } from "next";
-import { PostDataType } from "pages";
-import { TypeUser } from "@/customHooks/useGlobalState";
 import { getTokenInSsrAndCsr } from "@/utils/index";
 import { getUserById } from "@/modules/user/api";
 import { fetchPostsByUserId } from "@/modules/posts/api";
 import { useRouter } from "next/router";
 import useAuthenticated from "@/customHooks/useAutthenticated";
 import { message } from "antd";
+import { TypeUser, PostDataType } from "@/constants/typeData";
+import styled from "styled-components";
+
+const Wrapper = styled.div``;
 
 type PropsType = {
   userDetailInfo: TypeUser;
@@ -27,10 +29,10 @@ const UserDetail: NextPage<PropsType> = ({ userDetailInfo, userPosts }) => {
   }, []);
   if (!userDetailInfo) return <div>Không có dữ liệu</div>;
   return (
-    <div className="container">
+    <Wrapper>
       <UserDetailInfo userDetailInfo={userDetailInfo} />
       <UserPosts userPosts={userPosts} />
-    </div>
+    </Wrapper>
   );
 };
 

@@ -69,13 +69,13 @@ const Profile: React.FC = () => {
               <Option value="nu">nữ</Option>
             </Select>
           </Form.Item>
-          <Form.Item name="profilepicture">
+          {/* <Form.Item name="profilepicture">
             <Upload name="logo" action="/upload.do" listType="picture">
               <Button>
                 <UploadOutlined /> Chọn avatar
               </Button>
             </Upload>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item name="description">
             <Input.TextArea placeholder="mô tả ngắn" />
           </Form.Item>

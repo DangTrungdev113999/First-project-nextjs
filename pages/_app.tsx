@@ -31,7 +31,7 @@ const ContentWrapper = styled(Content)`
   width: 1200px;
   max-width: 100%;
   //@ts-ignore
-  margin-left: ${({ hideSidebar }) => (hideSidebar ? 0 : "250px")};
+  margin: ${({ hasSider }) => (!hasSider ? "0 0 0 250px" : "0 auto")};
   margin-top: 100px;
   overflow: initial;
 `;
@@ -59,8 +59,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }, []);
 
   const currentPath = router.pathname;
-  // TODO remove log
-  console.log(currentPath);
+
   const hiddenFooter = useMemo((): boolean => {
     const excludes = ["/", "/posts/[postId]"];
     return excludes.indexOf(currentPath) !== -1;
@@ -78,6 +77,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       "/users/profile",
       "/posts/create",
       "/posts/[postId]",
+      "/users/[userId]",
+      "/users/changePassword",
     ];
     return excludes.indexOf(currentPath) !== -1;
   }, [currentPath]);

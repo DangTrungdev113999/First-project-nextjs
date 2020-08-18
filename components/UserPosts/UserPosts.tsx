@@ -1,15 +1,21 @@
 import React from "react";
-import { PostDataType } from "pages";
 import { PostItem } from "../Postitem";
 import Masonry from "react-masonry-css";
 
-import "./userPosts.scss";
-
+import { PostDataType } from "@/constants/typeData";
+import "@/assets/css/global.scss";
 type PropsType = {
   userPosts: PostDataType[];
 };
 
 const UserPosts: React.FC<PropsType> = ({ userPosts }) => {
+  if (!userPosts.length) {
+    return (
+      <div style={{ textAlign: "center", marginTop: 50 }}>
+        Chưa có bài đăng nào
+      </div>
+    );
+  }
   return (
     <div>
       <Masonry

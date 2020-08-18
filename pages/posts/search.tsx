@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { PostDataType } from "pages";
 import { NextPage, NextPageContext } from "next";
 import Masonry from "react-masonry-css";
-
 import { searchPostLists } from "@/modules/posts/api";
 import { PostItem } from "@/components/Postitem";
 import { Typography } from "antd";
+import { PostDataType } from "@/constants/typeData";
 
 const { Title } = Typography;
 
-import "./search.scss";
+import "@/assets/css/global.scss";
 
 type PropsTypes = {
   listPosts: PostDataType[];
