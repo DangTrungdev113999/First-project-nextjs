@@ -8,7 +8,7 @@ import { searchPostLists } from "@/modules/posts/api";
 import { PostItem } from "@/components/Postitem";
 import { Typography } from "antd";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 import "./search.scss";
 
@@ -52,6 +52,7 @@ const SearchPost: NextPage<PropsTypes> = ({ listPosts }) => {
 
 SearchPost.getInitialProps = async (context: NextPageContext) => {
   const query = context.query.query;
+  //@ts-ignore
   const response = await searchPostLists({ query });
   return { listPosts: response.posts || [] };
 };

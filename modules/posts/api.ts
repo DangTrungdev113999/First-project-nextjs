@@ -7,7 +7,7 @@ export const fetchListPosts = async (params: Record<string, any>) =>
     `${BASE_URL}/post/getListPagination.php${toQuerryString(params)}`
   );
 
-export const fetchserPosts = async (
+export const fetchPostsByUserId = async (
   params: Record<string, any>,
   token: string
 ) =>
