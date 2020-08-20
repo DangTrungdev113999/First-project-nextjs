@@ -14,6 +14,7 @@ type TypeUpdateProfile = {
   fullname: string;
   gender: string;
   description: string;
+  avatar: File;
 };
 
 type TypeChangePassword = {
@@ -52,7 +53,7 @@ export const register = async (data: TypeRegister) =>
 export const getUserById = async (userId: string) =>
   await request(`${BASE_URL}/member/member.php?userid=${userId}`);
 
-export const updateProfile = async (data: TypeUpdateProfile, token: string) =>
+export const updateProfile = async (data: FormData, token: string) =>
   await request(`${BASE_URL}/member/update.php`, {
     method: "POST",
     headers: {

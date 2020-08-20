@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { Form, Input, Select, Upload, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Select, Upload, Button, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import Avatar from "antd/lib/avatar/avatar";
 import { useGlobalState } from "@/customHooks/useGlobalState";
 import { updateProfile } from "@/modules/user/api";
+import { createDataFromFormData } from "@/utils/index";
 const { Option } = Select;
 
 const Wrapper = styled.div`
@@ -24,28 +25,65 @@ const Wrapper = styled.div`
       font-size: 24px;
       font-weight: 400;
     }
+    > span {
+      width: auto;
+    }
   }
 `;
 
 const Profile: React.FC = () => {
   const [form] = Form.useForm();
-  const [user] = useGlobalState("currentUser");
+  const [user, setCurrentUser] = useGlobalState("currentUser");
   const [token] = useGlobalState("token");
+  const [file, setFile] = useState({
+    objFile: "",
+    urlPreview: "",
+  });
   useEffect(() => {
     form.setFieldsValue({
       fullname: user.fullname,
       gender: user.gender,
       description: user.description,
     });
+    setFile({
+      ...file,
+      urlPreview: user.profilepicture || "/images/avatar-02.png",
+    });
   }, []);
+
+  const handlePreviewImage = (info: any) => {
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+      setFile({
+        objFile: file,
+        urlPreview: reader.result as string,
+      });
+    });
+
+    reader.readAsDataURL(file);
+  };
 
   const onUpdateProfile = async () => {
     const fields = form.getFieldsValue(["fullname", "gender", "description"]);
-    // TODO remove log
-    console.log("fields", fields);
-    //@ts-ignore
-    const response = await updateProfile(fields, token);
-    console.log(response);
+
+    const data = {
+      fullname: fields.fullname,
+      gender: fields.gender,
+      description: fields.description,
+    };
+    if (file.objFile) {
+      data["avatar"] = file.objFile;
+    }
+
+    const fromData = createDataFromFormData(data);
+
+    const response = await updateProfile(fromData, token);
+    if (response.status === 200) {
+      setCurrentUser(response.user);
+      message.success("cập nhật thông tin profile thành công");
+    }
   };
 
   return (
@@ -53,7 +91,14 @@ const Profile: React.FC = () => {
       <Wrapper>
         <div>
           <div>Profile</div>
-          <Avatar shape="square" size={100} />
+          <Upload
+            name="avatar"
+            listType="picture-card"
+            showUploadList={false}
+            onChange={handlePreviewImage}
+          >
+            <Avatar shape="square" size={100} src={file.urlPreview} />
+          </Upload>
         </div>
         <Form form={form} onFinish={onUpdateProfile}>
           <Form.Item name="fullname">

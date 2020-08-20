@@ -85,3 +85,11 @@ export const hightlightText = (text: string, query: string) => {
   const beforeStr = text.substring(afterStr.length + query.length);
   return `${afterStr}<mark>${middleStr}</mark>${beforeStr}`;
 };
+
+export const createDataFromFormData = (data) => {
+  const formData = new FormData();
+
+  Object.keys(data).forEach(key => formData.append(key, data[key]))
+
+  return formData
+}
