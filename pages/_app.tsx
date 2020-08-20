@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
-import { Layout, Menu } from "antd";
+import React, { useMemo, useEffect } from "react";
+import { Layout } from "antd";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import styled from "styled-components";
+import NProgress from "nprogress";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -10,12 +11,14 @@ import { useGlobalState } from "@/customHooks/useGlobalState";
 import { getUserById } from "@/modules/user/api";
 import { getTokenInSsrAndCsr } from "@/utils/index";
 
+import { fetchCategories } from "@/modules/posts/api";
+import { LeftSideBar } from "@/components/SlideBar";
+
 import "bootstrap/dist/css/bootstrap.min.css";
+import "nprogress/nprogress.css";
 import "antd/dist/antd.css";
 
 import "@/assets/css/style.css";
-import { LeftSideBar } from "@/components/SlideBar";
-import { fetchCategories } from "@/modules/posts/api";
 const { Header: HeaderAnt, Content, Footer: FooterWrapper, Sider } = Layout;
 
 const HeaderWrapper = styled(HeaderAnt)`
@@ -56,6 +59,15 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     setCategories(pageProps.categories);
     setToken(pageProps.token);
     setMode(pageProps.mode);
+  }, []);
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => {
+      NProgress.start();
+    });
+    router.events.on("routeChangeComplete", () => {
+      NProgress.done();
+    });
   }, []);
 
   const currentPath = router.pathname;

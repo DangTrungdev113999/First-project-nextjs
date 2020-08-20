@@ -73,10 +73,12 @@ const Header: FC = () => {
           onSearch={onHandeSearch}
         />
       </div>
-      <Button type="primary" size="large" className="header-upload">
-        <UploadOutlined />
-        Upload
-      </Button>
+      <Link href="/posts/create">
+        <Button type="primary" size="large" className="header-upload">
+          <UploadOutlined />
+          Upload
+        </Button>
+      </Link>
       <div className="header-mode">
         <Text strong mode={mode}>
           Theme
@@ -95,7 +97,7 @@ const Header: FC = () => {
                 <Avatar
                   size={40}
                   src={currentUser.profilepicture || "/images/avatar-02.png"}
-                  style={{cursor: 'pointer'}}
+                  style={{ cursor: "pointer" }}
                 />
               </Link>
               <Link href="/users/[userId]" as={`/users/${currentUser.USERID}`}>

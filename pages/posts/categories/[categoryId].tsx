@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { PostDataType } from "pages";
 import { NextPage, NextPageContext } from "next";
 import Masonry from "react-masonry-css";
 
@@ -12,7 +11,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useGlobalState } from "@/customHooks/useGlobalState";
 
 import { LoadingOutlined } from "@ant-design/icons";
-import "../search.scss";
+import { PostDataType } from "@/constants/typeData";
+
+import "@/assets/css/global.scss";
 
 const { Title, Text } = Typography;
 type PropsTypes = {
@@ -27,6 +28,7 @@ const defaultQuery = {
 const SearchPostByCategory: NextPage<PropsTypes> = ({ listPosts }) => {
   const router = useRouter();
   const categoryId = router.query.categoryId || null;
+  //TODO map  id into keyword
   const [categories] = useGlobalState("categories");
   const [posts, setPosts] = useState(listPosts);
   const [hasMore, setHasMore] = useState(true);
@@ -39,9 +41,6 @@ const SearchPostByCategory: NextPage<PropsTypes> = ({ listPosts }) => {
       setPosts(listPosts);
       setHasMore(true);
       setQuerry(defaultQuery);
-
-
-      
     }
   }, [categoryId]);
 
@@ -79,20 +78,38 @@ const SearchPostByCategory: NextPage<PropsTypes> = ({ listPosts }) => {
       <br />
 
       <InfiniteScroll
-        style={{ overflow: "hidden" }}
+        style={{
+          overflow: "hidden",
+        }}
         dataLength={posts.length}
         next={updateQuerry}
         hasMore={hasMore}
         loader={
-          <div style={{ textAlign: "center", padding: 20 }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: 20,
+            }}
+          >
             <Spin
-              indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 24,
+                  }}
+                  spin
+                />
+              }
             />
           </div>
         }
         pullDownToRefreshContent
         endMessage={
-          <p style={{ textAlign: "center" }}>
+          <p
+            style={{
+              textAlign: "center",
+            }}
+          >
             <b>Yay! You have seen it all</b>
           </p>
         }

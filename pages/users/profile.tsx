@@ -35,6 +35,7 @@ const Profile: React.FC = () => {
   const [form] = Form.useForm();
   const [user, setCurrentUser] = useGlobalState("currentUser");
   const [token] = useGlobalState("token");
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState({
     objFile: "",
     urlPreview: "",
@@ -66,6 +67,7 @@ const Profile: React.FC = () => {
   };
 
   const onUpdateProfile = async () => {
+    setLoading(true);
     const fields = form.getFieldsValue(["fullname", "gender", "description"]);
 
     const data = {
@@ -83,7 +85,11 @@ const Profile: React.FC = () => {
     if (response.status === 200) {
       setCurrentUser(response.user);
       message.success("cập nhật thông tin profile thành công");
+    } else {
+      message.error(`cập nhật thông tin profile thất bại: ${response.error}`);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -114,18 +120,16 @@ const Profile: React.FC = () => {
               <Option value="nu">nữ</Option>
             </Select>
           </Form.Item>
-          {/* <Form.Item name="profilepicture">
-            <Upload name="logo" action="/upload.do" listType="picture">
-              <Button>
-                <UploadOutlined /> Chọn avatar
-              </Button>
-            </Upload>
-          </Form.Item> */}
           <Form.Item name="description">
             <Input.TextArea placeholder="mô tả ngắn" />
           </Form.Item>
           <Form.Item name="udpate">
-            <Button size="large" type="primary" htmlType="submit">
+            <Button
+              size="large"
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+            >
               Cập nhật
             </Button>
           </Form.Item>
