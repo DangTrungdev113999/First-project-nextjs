@@ -1,21 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { PostCreateForm } from "@/components/PostCreateForm";
 import { PostCreateSidebar } from "@/components/PostCreateSidebar";
+import { Row, Col, message } from "antd";
 import useAuthenticated from "@/customHooks/useAutthenticated";
+import { createPost } from "@/modules/posts/api";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { createDataFromFormData } from "@/utils/index";
+import { useRouter } from "next/router";
+
+const initialPost = {
+  obj_image: {
+    objFile: null,
+    base64Url: "",
+  },
+  url_image: "",
+  post_content: "",
+  category: [1, 2, 3],
+};
 
 const Create: React.FC = () => {
   useAuthenticated("posts/create");
+  const [token] = useGlobalState("token");
+  const [post, setPost] = useState(initialPost);
+  const router = useRouter();
+  const handleSetPost = (key: string, value: any) => {
+    setPost({
+      ...post,
+      [key]: value,
+    });
+  };
+
+  const handleCreatePost = async () => {
+    const data = {
+      obj_image: post.obj_image.objFile,
+      url_image: post.url_image,
+      post_content: post.post_content,
+      category: post.category,
+    };
+
+    const formData = createDataFromFormData(data);
+    const response = await createPost(formData, token);
+    if (response.status === 200) {
+      message.success(response.message);
+      router.push("/");
+    } else {
+      message.success(`Đăng bài thất bại: ${response.error}`);
+    }
+    console.log(response);
+  };
+
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-lg-8">
-          <PostCreateForm />
-        </div>
-        <div className="col-lg-4">
-          <PostCreateSidebar />
-        </div>
-      </div>
-    </div>
+    <Row gutter={[30, 18]}>
+      <Col md={16}>
+        <PostCreateForm
+          obj_image={post.obj_image}
+          url_image={post.url_image}
+          post_content={post.post_content}
+          handleSetPost={handleSetPost}
+        />
+      </Col>
+      <Col md={8}>
+        <PostCreateSidebar
+          category={post.category}
+          handleSetPost={handleSetPost}
+          handleCreatePost={handleCreatePost}
+        />
+      </Col>
+    </Row>
   );
 };
 

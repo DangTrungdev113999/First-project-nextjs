@@ -44,3 +44,19 @@ export const searchPostListsByCategoryId = async (
   await request(
     `${BASE_URL}/post/getListByCategory.php${toQuerryString(params)}`
   );
+
+type TypeCreatePost = {
+  obj_image: File;
+  url_image: string;
+  post_content: string;
+  category: number[];
+};
+
+export const createPost = async (data: FormData, token: string) =>
+  await request(`${BASE_URL}/post/addNew.php`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data,
+  });

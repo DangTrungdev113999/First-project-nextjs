@@ -22,3 +22,8 @@ export type TypeUser = {
   youviewed?: string;
   yourviewed?: string;
 };
+
+export type TypeCategories = {
+  id: string;
+  text: string;
+};
