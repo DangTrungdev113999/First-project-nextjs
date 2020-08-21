@@ -34,17 +34,21 @@ const ContentWrapper = styled(Content)`
   width: 1200px;
   max-width: 100%;
   //@ts-ignore
-  margin: ${({ hasSider }) => (!hasSider ? "0 0 0 250px" : "0 auto")};
+  margin: ${({ hasSider }) => (!hasSider ? "0 0 0 350px" : "0 auto")};
   margin-top: 100px;
   overflow: initial;
 `;
 
 const SiderWrapper = styled(Sider)`
-  overflow: auto;
+  width: 400px !important;
   height: 100vh;
+  overflow: hidden;
   position: fixed;
   left: 0;
   z-index: 1;
+  &:hover {
+    overflow: auto;
+  }
 `;
 
 function MyApp({ Component, pageProps, router }: AppProps) {
@@ -127,7 +131,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         )}
         <Layout>
           {!hideSidebar && (
-            <SiderWrapper theme={mode} collapsible>
+            <SiderWrapper theme={mode} width={300}>
               <LeftSideBar />
             </SiderWrapper>
           )}

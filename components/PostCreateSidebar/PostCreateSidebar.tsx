@@ -16,6 +16,7 @@ const { Text } = Typography;
 
 type PropsTypes = {
   category: number[];
+  loading: boolean;
   handleCreatePost: () => void;
   handleSetPost: (key: string, value: number[]) => void;
 };
@@ -24,6 +25,7 @@ const PostCreateSidebar: React.FC<PropsTypes> = ({
   category,
   handleSetPost,
   handleCreatePost,
+  loading,
 }) => {
   const [categories] = useGlobalState("categories");
 
@@ -46,6 +48,7 @@ const PostCreateSidebar: React.FC<PropsTypes> = ({
       <Button
         type="primary"
         style={{ width: "100%" }}
+        loading={loading}
         onClick={handleCreatePost}
       >
         Đăng bài

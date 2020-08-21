@@ -22,6 +22,7 @@ const Create: React.FC = () => {
   useAuthenticated("posts/create");
   const [token] = useGlobalState("token");
   const [post, setPost] = useState(initialPost);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const handleSetPost = (key: string, value: any) => {
     setPost({
@@ -31,6 +32,7 @@ const Create: React.FC = () => {
   };
 
   const handleCreatePost = async () => {
+    setLoading(true);
     const data = {
       obj_image: post.obj_image.objFile,
       url_image: post.url_image,
@@ -46,7 +48,7 @@ const Create: React.FC = () => {
     } else {
       message.success(`Đăng bài thất bại: ${response.error}`);
     }
-    console.log(response);
+    setLoading(false);
   };
 
   return (
@@ -64,6 +66,7 @@ const Create: React.FC = () => {
           category={post.category}
           handleSetPost={handleSetPost}
           handleCreatePost={handleCreatePost}
+          loading={loading}
         />
       </Col>
     </Row>
