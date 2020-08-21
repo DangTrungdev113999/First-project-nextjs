@@ -95,7 +95,7 @@ const Header: FC = () => {
                 <Avatar
                   size={40}
                   src={currentUser.profilepicture || "/images/avatar-02.png"}
-                  style={{cursor: 'pointer'}}
+                  style={{ cursor: "pointer" }}
                 />
               </Link>
               <Link href="/users/[userId]" as={`/users/${currentUser.USERID}`}>

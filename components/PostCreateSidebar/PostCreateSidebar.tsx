@@ -1,73 +1,70 @@
 import React from "react";
+import { useGlobalState } from "@/customHooks/useGlobalState";
+import { Checkbox, Button, Typography } from "antd";
+import styled from "styled-components";
 
-const PostCreateSidebar = () => {
+const WrapperCheckbox = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-row-gap: 10px;
+  > label:first-child {
+    margin: 0 0 0 8px;
+  }
+`;
+
+const { Text } = Typography;
+
+type PropsTypes = {
+  category: number[];
+  handleCreatePost: () => void;
+  handleSetPost: (key: string, value: number[]) => void;
+};
+
+const PostCreateSidebar: React.FC<PropsTypes> = ({
+  category,
+  handleSetPost,
+  handleCreatePost,
+}) => {
+  const [categories] = useGlobalState("categories");
+
+  const handleChecked = (e: any) => {
+    const values = [...category];
+    if (e.target.checked) {
+      values.push(e.target.value);
+      handleSetPost("category", values);
+    } else {
+      const index = values.indexOf(e.target.value);
+      handleSetPost("category", [
+        ...values.slice(0, index),
+        ...values.slice(index + 1),
+      ]);
+    }
+  };
+
   return (
-    <aside className="ass1-aside ass1-aside__edit-post">
-      <div>
-        <a href="#" className="ass1-btn">
-          Đăng bài
-        </a>
-      </div>
-      <div className="ass1-aside__edit-post-head">
-        <span style={{ display: "block", width: "100%", marginBottom: "10px" }}>
-          Chọn danh mục
-        </span>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>Ảnh troll</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>FapTV</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>Ảnh troll</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>FapTV</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>Ảnh troll</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>FapTV</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>Ảnh troll</p>
-        </label>
-        <label className="ass1-checkbox">
-          <input type="radio" name="state-post" />
-          <span />
-          <p>FapTV</p>
-        </label>
-      </div>
-      <div className="ass1-aside__get-code">
-        <p>Share Link</p>
-      </div>
-      <div className="ass1-aside__social">
-        <a className="ass1-btn-social__facebook ass1-btn-social">
-          <i className="fa fa-facebook" aria-hidden="true" />
-        </a>
-        <a className="ass1-btn-social__twitter ass1-btn-social">
-          <i className="fa fa-twitter" aria-hidden="true" />
-        </a>
-        <a className="ass1-btn-social__google ass1-btn-social">
-          <i className="fa fa-google-plus" aria-hidden="true" />
-        </a>
-      </div>
-    </aside>
+    <>
+      <Button
+        type="primary"
+        style={{ width: "100%" }}
+        onClick={handleCreatePost}
+      >
+        Đăng bài
+      </Button>
+      <br />
+      <br />
+      <WrapperCheckbox>
+        {categories.map((item) => (
+          <Checkbox
+            value={item.id}
+            key={item.id}
+            checked={category.map((i) => +i).indexOf(+item.id) !== -1}
+            onChange={handleChecked}
+          >
+            <Text strong>{item.text}</Text>
+          </Checkbox>
+        ))}
+      </WrapperCheckbox>
+    </>
   );
 };
 

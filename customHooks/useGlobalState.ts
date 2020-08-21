@@ -1,11 +1,7 @@
 import React from "react";
+import { TypeCategories } from "./../constants/typeData";
 import { createGlobalState } from "react-hooks-global-state";
 import { TypeUser } from "@/constants/typeData";
-
-type TypeCategories = {
-  id: string;
-  text: string;
-};
 
 type TypeInitalState = {
   currentUser: TypeUser | null;
