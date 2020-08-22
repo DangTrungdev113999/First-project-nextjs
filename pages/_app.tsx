@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from "react";
 import { Layout } from "antd";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import NProgress from "nprogress";
 
 import { Footer } from "@/components/Footer";
